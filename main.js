@@ -317,7 +317,7 @@ function cardFunctions(cardId, Player) {
 
     cardRef.addEventListener('click', () => {
       options = !options;
-      cardOptions(cardRef, options)
+      cardOptions(cardRef, target)
     });
 
     cardEl.insertAdjacentElement('beforeend', cardRef);
