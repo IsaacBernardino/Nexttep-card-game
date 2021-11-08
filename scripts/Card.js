@@ -10,6 +10,8 @@ class Card {
 
     this.isSet = isSet;
 
+    this.faceUp = false;
+
     this.effect = {
       FIRST: FIRST || false, // primeira carta a ser jogada
       SKIP: SKIP || false, //  Passa para a end phase

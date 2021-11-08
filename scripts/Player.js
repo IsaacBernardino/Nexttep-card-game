@@ -1,8 +1,10 @@
-function Player (name, deck, isCardShow) {
+function Player (name, deck, isCardShow, GamePhasesManager) {
   const player = {}
   player.name = name;
   player.deck = deck;
-  player.cardShow = isCardShow || false; 
+  player.cardShow = isCardShow || false;
+
+  player.GamePhasesManager = GamePhasesManager;
 
   player.amount = [];
   player.amountScore = 0;
@@ -27,17 +29,16 @@ function Player (name, deck, isCardShow) {
     handEl:''
   }
 
-
   function init() {
     player.amountScore = 0;
-    // Remover 5 cartas do deck e adicionar na mão do jogador
-    drawFive();
   }
 
   function drawFive() {
     for(let i = 0; i < 5; i++){
       player.hand.push(deck.draw());
     }
+
+    updateHand();
   }
 
   function updateHand() {
@@ -51,6 +52,7 @@ function Player (name, deck, isCardShow) {
 
   function addCardOnHand () {
     player.hand.push(deck.draw());
+    player.updateHand();
   }
 
   function drawPlayer(enemy){
@@ -121,7 +123,6 @@ function Player (name, deck, isCardShow) {
       spellsEl  : spellsEl,
       handEl    : handEl
     }
-
   }
 
   return player;
@@ -198,6 +199,12 @@ function cardFunctions(cardId, Player) {
     }
 
     Player.updateHand();
+    
+    // Verificar se na mão contem cartas iguais 
+    const sameCards = Player.hand.filter(card => cardId.id == card.id);
+
+    Player.GamePhasesManager.ACTION_PHASE = false; // finalizar fase de ação quando todas as ações for cocluidas
+    Player.GamePhasesManager.END_PHASE = true; // proximo jogador
   }
 
   function cardSpellField(isSet) {
@@ -338,12 +345,16 @@ function cardFunctions(cardId, Player) {
     cardRef.style.margin = '1px';
 
     cardRef.addEventListener('click', (e) => {
+      if(Player.GamePhasesManager.ACTION_PHASE){
       options = !options;
       cardOptions(cardRef, cardEl, this); // this = target
 
       e.target.style.backgroundColor = 'red';
       e.target.style.border = options ? '2px solid red' : '0';
       e.target.style.borderRadius = options ? '4px' : '0';
+      } else{
+        console.error('Não é sua fase de ação')
+      }
     });
 
     cardEl.insertAdjacentElement('beforeend', cardRef);
