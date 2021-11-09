@@ -3,9 +3,13 @@ import CARDS from "./CARDS.js";
 function Deck() {
   const mainDeck = {}
 
+  const ev = document.querySelector('#battlefieldEl')
+
   //Variaveis
   mainDeck.MAX_CARDS = 40;
   mainDeck.currentCards = 0;
+
+  // Cartas no deck
   mainDeck.cards = 
   [
     CARDS[0], CARDS[0], CARDS[0],
@@ -23,8 +27,8 @@ function Deck() {
     CARDS[3], CARDS[3],
     CARDS[8], CARDS[8],
     CARDS[1],
-    CARDS[6]
-    //CARDS[10],CARDS[11],CARDS[12], CARDS[13], CARDS[14], CARDS[15], CARDS[16], CARDS[17],
+    CARDS[6],
+    CARDS[10],CARDS[11],CARDS[12], CARDS[13], CARDS[14], CARDS[15], CARDS[16], CARDS[17],
   ]
 
   // Variaveis internas
@@ -34,84 +38,52 @@ function Deck() {
   mainDeck.init = init;
   mainDeck.draw = draw;
   mainDeck.makeDeck = makeDeck;
-  mainDeck.shuffle = shuffle;
+  mainDeck.deckShuffle = deckShuffle;
   mainDeck.addCardToDeck = addCardToDeck;
   mainDeck.removeCardFromDeck = removeCardFromDeck;
 
   function init() {
-    console.log('==> Main Deck initializing...');
+    console.log('Deck > Main Deck initializing...');
     mainDeck.currentCards = mainDeck.cards.length;
 
     complete = true;
 
-    shuffle();
+    deckShuffle();
 
-    console.log('==> Main Deck initializing complete...');
+    console.log('Deck > Main Deck initializing complete...');
   }
 
   function makeDeck(){
+    // Area principal
     const deckDescart = document.createElement('div');
     deckDescart.classList.add('deck-area');
 
+    // DECK
     const deckEl = document.createElement('div');
     deckEl.classList.add('deckEl');
     deckEl.innerHTML = mainDeck.currentCards;
-
-    deckEl.style.backgroundColor = 'yellow';
-    deckEl.style.width = '70px';
-    deckEl.style.height = '45px';
-
-    deckEl.style.border = '2px solid black'
-    deckEl.style.borderRadius = '5px';
-    deckEl.style.margin = '2px';
-
-    deckEl.style.display = 'flex';
-    deckEl.style.justifyContent = 'center';
-    deckEl.style.alignItems = 'center';
-
     // Descarte
     const descartEl = document.createElement('div');
-
-    descartEl.style.backgroundColor = 'yellow';
-    descartEl.style.width = '70px';
-    descartEl.style.height = '45px';
-
-    descartEl.style.border = '2px solid black'
-    descartEl.style.borderRadius = '5px';
-    descartEl.style.margin = '2px';
-
-    descartEl.style.display = 'flex';
-    descartEl.style.justifyContent = 'center';
-    descartEl.style.alignItems = 'center';
-
+    descartEl.classList.add('descartEl');
+    
     deckDescart.insertAdjacentElement('beforeend', deckEl);
     deckDescart.insertAdjacentElement('beforeend', descartEl);
 
-    document.body.insertAdjacentElement('beforeend', deckDescart);
+    // ev = ambiente
+    ev.insertAdjacentElement('beforeend', deckDescart);
   }
 
-  function shuffle() {
+  function deckShuffle() {
     if(complete && mainDeck.currentCards > 0){
-      console.log('==> Shuffling main Deck...');
-
-      let currentIndex = mainDeck.cards.length,  randomIndex;
-      // While there remain elements to shuffle...
-      while (currentIndex != 0) {
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-      // And swap it with the current element.
-      [mainDeck.cards[currentIndex], mainDeck.cards[randomIndex]] =
-      [mainDeck.cards[randomIndex], mainDeck.cards[currentIndex]];
-    }
-  }else {
+      shuffle(mainDeck);
+    }else {
       error('The deck has not been initialized yet or is empty');
     }
   }
 
   function draw () {
     if(complete && mainDeck.currentCards > 0){
-      console.log('==> Draw a card...');
+      console.log('Deck > Draw a card');
       let card = mainDeck.cards.pop();
       updateDeck();
       return card;
@@ -126,7 +98,7 @@ function Deck() {
     if(complete && mainDeck.currentCards > 0){
       console.log('--> Adding card to the deck.');
       mainDeck.cards.push(card);
-      mainDeck.shuffle();
+      mainDeck.deckShuffle();
       updateDeck();
     } else {
       error('The deck has not been initialized yet or is empty');
@@ -148,7 +120,7 @@ function Deck() {
       }
       // Atualiza o estado do deck
       updateDeck();
-      shuffle();
+      mainDeck.deckShuffle();
     } else {
       error('The deck has not been initialized yet or is empty');
     }
@@ -158,7 +130,7 @@ function Deck() {
     const deckElStyle = document.querySelector('.deckEl');
 
     if(complete && mainDeck.currentCards > 0){
-      console.log('--> Update deck.');
+      //console.log('--> Update visual deck.');
       mainDeck.currentCards = mainDeck.cards.length;
       if(deckElStyle != null)
         deckElStyle.innerHTML = mainDeck.currentCards;

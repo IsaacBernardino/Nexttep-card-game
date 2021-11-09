@@ -72,7 +72,7 @@ const CARDS = [
     type: 'number',
     isSet: {set: false, turns: 0},
 
-    DESCART: true
+    DESCART: {descart: 1, target: ''}
   }),
 
   new Card({

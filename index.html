@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nexttep Battlefield</title>
 
+  <!-- ESTILOS -->
+  <link rel="stylesheet" href="./scripts/environment/environment.css">
+
   <style>
     *{
       font-family: Arial, Helvetica, sans-serif;
@@ -20,13 +23,6 @@
       flex-direction: column;
 
       align-items:center;
-    }
-
-    .deck-area {
-      background-color: red;
-      width: 100%;
-      display: flex;
-      justify-content: space-around;
     }
 
     .cardPanel{
@@ -70,6 +66,8 @@
     }
 
     .options {
+      visibility: hidden;
+
       background-color: #000000;
       width: 40px;
       height: 240px;
@@ -99,6 +97,23 @@
 </head>
 <body>
 
+  <div id="battlefieldEl">
+    <div id="opponent">
+
+      <div id="opponentField">
+        <div class="opponent_handEl">
+          <!-- Retorna resultados do oponente -->
+          <div id="player_status"> Esperando por oponente... </div>
+        </div>
+        <div class="opponent_fieldEl">
+
+          <div class="opponent_spellsEl"></div>
+          <div class="opponent_amountEl"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="options">
     <div id="d_phase">DRAW PHASE</div> |
     <div id="w_phase">WAIT PHASE</div> |
@@ -112,6 +127,12 @@
   </div>
 
   <script type="module" src="./main.js"></script>
+  <script src="./scripts/CardFunctions.js"></script>
+
+  <script src="./scripts/environment/environment.js"></script>
+
+  <!-- Ultilidades -->
+  <script src="./scripts/utilities/shuffle.js"></script>
 
 </body>
 </html>

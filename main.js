@@ -1,5 +1,6 @@
 import Deck from "./scripts/Deck.js";
 import Player from "./scripts/Player.js";
+import Bot from "./scripts/bot.js";
 
 import GamePhases from "./scripts/GamePhases.js";
 
@@ -7,116 +8,171 @@ const GamePhasesManager = GamePhases();
 
 const deck = Deck();
 
-
-const Players = [
-  Player('Player', deck, true, GamePhasesManager),
-  Player('Enemy', deck, false, GamePhasesManager)
-]
+const opponents = [];
 
 // GAME ENGINE
 // Iniciar primeira instacia do jogo quando a pagina for totalmente carregada
-let player = 0;
 let update = true;
+let initGame;
 
-window.addEventListener('load', InitGame);
-function InitGame () {
-  console.log('General: Initializing Game.');
+const bot_player = Bot('Bot', deck, false);
 
-  if(GamePhasesManager.initGame) {
-    deck.init();
+const player = Player('Player', deck, true);
 
-    Players[0].init();
-    Players[1].init();
-  
-    Players[1].drawPlayer(true);
+function GameEngine() {
+  const Game = {}
 
-    deck.makeDeck();
+  Game.turns = 0;
 
-    Players[0].drawPlayer();
+  Game.Init = Init;
+  Game.SearchForOpponent = SearchForOpponent;
+  Game.PlayWithBot = PlayWithBot;
+
+  function Init () {
+    Game.turns = 0;
+
+    deck.init()
+    deck.makeDeck()
+
+    bot_player.init();
+    player.init();
+
+    Game.Actions.drawFive(bot_player);
+    Game.Actions.drawFive(player);
+
+    opponents.push(bot_player)
+    //console.log('oponents', opponents)
+  }
+
+  function SearchForOpponent() {
     
-    Players[0].drawFive();
-    Players[1].drawFive();
-
-    GamePhasesManager.initGame = false;
   }
 
-  Game();
-  console.log('General: Initializing Game complete.');
+  function PlayWithBot() {
+    
+  }
+
+  Game.Actions = {
+    //Regra de jogo
+    drawFive(player) {
+      console.log(`${player.name.name}: Draw 5 cards from deck`)
+      for(let i = 0; i < 5; i++){
+        player.hand.push(deck.draw());
+      }
+
+      player.updateHand();
+    }
+  }
+
+  //console.log(Game.Actions);
+
+  return Game;
 }
 
-const d_phaseEl = document.querySelector('#d_phase');
-const w_phaseEl = document.querySelector('#w_phase');
-const a_phaseEl = document.querySelector('#a_phase');
-const e_phaseEl = document.querySelector('#e_phase');
+const game = GameEngine();
 
+game.Init();
 
+// const playerStatsEl = document.querySelector('#player_status');
 
+// if(opponents.length <= 0) {
+//   console.log('GENERAL: Nenhum oponente');
+//   initGame = false;
+// } else {
+//   playerStatsEl.style.visibility = 'hidden';
+// }
 
-function Game() {
-  requestAnimationFrame(Game);
+// window.addEventListener('load', InitGame);
+// function InitGame () {
+//   console.log('General: Initializing Game.');
 
-  d_phaseEl.style.background = GamePhasesManager.DRAW_PHASE ? 'blue' : 'white';
-  w_phaseEl.style.background = GamePhasesManager.WAIT_PHASE ? 'blue' : 'white';
-  a_phaseEl.style.background = GamePhasesManager.ACTION_PHASE ? 'blue' : 'white';
-  e_phaseEl.style.background = GamePhasesManager.END_PHASE ? 'blue' : 'white';
+//   if(GamePhasesManager.initGame) {
+    
+//     deck.init();
+//     deck.makeDeck();
 
-  if(update) {
+//     player.init();
+//     player.drawFive();
 
-    update = false;
-  }
+//     GamePhasesManager.initGame = false;
+//   }
 
-  if(GamePhasesManager.DRAW_PHASE) {
-    GamePhasesManager.END_PHASE = false;
-    GamePhasesManager.WAIT_PHASE = false;
-    GamePhasesManager.ACTION_PHASE = false;
+//   Game();
+//   console.log('General: Initializing Game complete.');
+// }
 
-    Players[player].addCardOnHand(deck.draw());
+// const d_phaseEl = document.querySelector('#d_phase');
+// const w_phaseEl = document.querySelector('#w_phase');
+// const a_phaseEl = document.querySelector('#a_phase');
+// const e_phaseEl = document.querySelector('#e_phase');
 
-    GamePhasesManager.DRAW_PHASE = false;
-  }
+// function Game() {
+//   requestAnimationFrame(Game);
 
-  if(GamePhasesManager.WAIT_PHASE) {
-    GamePhasesManager.END_PHASE = false;
-    GamePhasesManager.DRAW_PHASE = false;
-    GamePhasesManager.ACTION_PHASE = false;
+//   d_phaseEl.style.background = GamePhasesManager.DRAW_PHASE ? 'blue' : 'white';
+//   w_phaseEl.style.background = GamePhasesManager.WAIT_PHASE ? 'blue' : 'white';
+//   a_phaseEl.style.background = GamePhasesManager.ACTION_PHASE ? 'blue' : 'white';
+//   e_phaseEl.style.background = GamePhasesManager.END_PHASE ? 'blue' : 'white';
 
-    //Action
+//   if(update) {
 
-    GamePhasesManager.WAIT_PHASE = false;
-  }
-  if(GamePhasesManager.WAIT_PHASE) {
-    GamePhasesManager.END_PHASE = false;
-    GamePhasesManager.DRAW_PHASE = false;
-    GamePhasesManager.ACTION_PHASE = false;
+//     update = false;
+//   }
 
-    //Action
-  }
+//   if(GamePhasesManager.DRAW_PHASE) {
+//     GamePhasesManager.END_PHASE = false;
+//     GamePhasesManager.WAIT_PHASE = false;
+//     GamePhasesManager.ACTION_PHASE = false;
 
-  if(GamePhasesManager.END_PHASE) {
-    console.log('acabou o turno')
-    player = player == 0 ? 1 : 0;
+//     Player.addCardOnHand(deck.draw());
 
-    GamePhasesManager.END_PHASE = false;
-    GamePhasesManager.ACTION_PHASE = false;
+//     GamePhasesManager.DRAW_PHASE = false;
+//   }
 
-    GamePhasesManager.DRAW_PHASE = true;
+//   if(GamePhasesManager.WAIT_PHASE) {
+//     GamePhasesManager.END_PHASE = false;
+//     GamePhasesManager.DRAW_PHASE = false;
+//     GamePhasesManager.ACTION_PHASE = false;
 
-    update = true;
-  }
-}
+//     //Action
 
-d_phaseEl.addEventListener('click', () => {
-  //GamePhasesManager.DRAW_PHASE = true;
-});
+//     GamePhasesManager.WAIT_PHASE = false;
+//   }
+//   if(GamePhasesManager.WAIT_PHASE) {
+//     GamePhasesManager.END_PHASE = false;
+//     GamePhasesManager.DRAW_PHASE = false;
+//     GamePhasesManager.ACTION_PHASE = false;
 
-w_phaseEl.addEventListener('click', () => {
-  GamePhasesManager.WAIT_PHASE = true;
-});
+//     //Action
+//   }
 
-a_phaseEl.addEventListener('click', () => {
-  GamePhasesManager.ACTION_PHASE = true;
-});
+//   if(GamePhasesManager.END_PHASE) {
+//     console.log('acabou o turno')
+//     player = player == 0 ? 1 : 0;
 
-e_phaseEl.addEventListener('click', () => {
-  GamePhasesManager.END_PHASE = true;
-});
+//     GamePhasesManager.END_PHASE = false;
+//     GamePhasesManager.ACTION_PHASE = false;
+
+//     GamePhasesManager.DRAW_PHASE = true;
+
+//     update = true;
+//   }
+// }
+
+// d_phaseEl.addEventListener('click', () => {
+//   //GamePhasesManager.DRAW_PHASE = true;
+// });
+
+// w_phaseEl.addEventListener('click', () => {
+//   GamePhasesManager.WAIT_PHASE = true;
+// });
+
+// a_phaseEl.addEventListener('click', () => {
+//   GamePhasesManager.ACTION_PHASE = true;
+// });
+
+// e_phaseEl.addEventListener('click', () => {
+//   GamePhasesManager.END_PHASE = true;
+// });
+
+// IA - Bot
