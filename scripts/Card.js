@@ -1,6 +1,7 @@
 class Card {
   constructor({id, art, cardName, value, description, type, isSet, FIRST, SKIP, STAY, DENY_DRAW, DRAW, DESCART, DESCART_VERIFY, SHOW_HAND, HAND_VERIFY, AMOUNT_VERIFY, AMOUNT_SHUFFLE, AMOUNT_REMOVE_LAST, AMOUNT_REMOVE_FIRST, QUICK, PLAYER_CHOOSE, BANISH, REVERSE_WIN_RULE} ){
     this.id = id;
+
     this.art = art;
     this.verse = 'cards/verso.png';
     this.cardName = cardName;
@@ -9,8 +10,6 @@ class Card {
     this.type = type;
 
     this.isSet = isSet;
-
-    this.faceUp = false;
 
     this.effect = {
       FIRST: FIRST || false, // primeira carta a ser jogada
@@ -34,6 +33,14 @@ class Card {
       QUICK: QUICK || false, // carta de efeito rapido
       PLAYER_CHOOSE: PLAYER_CHOOSE || false, // escolher um jogador na mesa
       REVERSE_WIN_RULE: REVERSE_WIN_RULE || false //
+    }
+  }
+
+  ReverceCard() {
+    if(this.faceUp) {
+      this.face = this.art;
+    } else {
+      this.face = this.verse;
     }
   }
 }

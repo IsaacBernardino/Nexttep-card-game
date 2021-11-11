@@ -43,14 +43,14 @@ function Deck() {
   mainDeck.removeCardFromDeck = removeCardFromDeck;
 
   function init() {
-    console.log('Deck > Main Deck initializing...');
+    //console.log('Deck > Main Deck initializing...');
     mainDeck.currentCards = mainDeck.cards.length;
 
     complete = true;
 
     deckShuffle();
 
-    console.log('Deck > Main Deck initializing complete...');
+    //console.log('Deck > Main Deck initializing complete...');
   }
 
   function makeDeck(){
@@ -83,7 +83,7 @@ function Deck() {
 
   function draw () {
     if(complete && mainDeck.currentCards > 0){
-      console.log('Deck > Draw a card');
+      //console.log('Deck > Draw a card');
       let card = mainDeck.cards.pop();
       updateDeck();
       return card;

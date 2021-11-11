@@ -1,3 +1,5 @@
+import { SelectionContainer } from "./utilities/SelectionTool.js";
+
 function CardFunctions(cardId, Player) {
   const card = {};
 
@@ -7,7 +9,6 @@ function CardFunctions(cardId, Player) {
   card.setCardField = setCardField;
 
   let options = false;
-  let selection = [];
 
   // Colocar carta no campo
   function setCardField(){
@@ -16,8 +17,10 @@ function CardFunctions(cardId, Player) {
   }
 
   // Aplicação de efeitos
-
   function applyEffect () {
+
+    //SelectionContainer(Player.hand);
+
     options = false;
     let effectComplete = false;
     // Verifica se a carta é um numero
@@ -37,7 +40,7 @@ function CardFunctions(cardId, Player) {
 
     if(cardId.effect.FIRST === true) {
 
-     }
+    }
 
     if(cardId.effect.DRAW === true) {
       Player.addCardOnHand();
@@ -45,18 +48,8 @@ function CardFunctions(cardId, Player) {
 
     if(cardId.effect.DESCART.descart >= 1 && Player.hand.length > 0) {
       let toDescart = cardId.effect.DESCART.descart;
-        // TO-DO Implementar seleção para fazer o descarte
-      
-      console.log('target descard ' + cardId.effect.DESCART.descart + ' card');
-      const descartContainerEl = document.createElement('div');
-
-      const current_cardsEl =  document.createElement('div');
-
-      const ok_button = document.createElement('button');
-      ok_button.innerText = 'Concluido';
-      ok_button.style = `background-color: #339922; color: #eee; width: 50%; height: 40px; z-index: 3; border: none; border-radius: 8px;`
-      ok_button.addEventListener('click', () => {
-        //ação
+      SelectionContainer(Player.hand, toDescart, (cardsSelections) => {
+        let selection = cardsSelections;
         // Comparar o array com as cartas para deletar e a mão depois descartar
         const cards = [];
 
@@ -69,69 +62,84 @@ function CardFunctions(cardId, Player) {
             Player.hand.splice(cardIndex, 1);
             Player.updateHand();
 
-            console.log(`${c.cardName} foi descartado`);
+            console.log(card.cardRefId);
             // criar area de descarte
             // DECK --> descarte
           }else {
             console.error('error to descart');
           }
         });
-
-        descartContainerEl.style.visibility = 'hidden';
       });
+      // TO-DO Implementar seleção para fazer o descarte
       
-      descartContainerEl.style = `
-      color: #eee;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: absolute; left: 50%; top: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 5px;
-      padding: 50px 20px;
-      background-color: #aaa; width: 96%; z-index: 3;
-      `
-      current_cardsEl.style = `
-      margin: 50px 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 5px;
-      background-color: #fff; width: 96%; height: 100px; z-index: 3;
-      `
+      // console.log('target descard ' + cardId.effect.DESCART.descart + ' card');
+      // const descartContainerEl = document.createElement('div');
 
-      Player.hand.forEach(card => {
-        //Bot.places.handEl.insertAdjacentElement('beforeend', cardFunctions(card, Bot).draw(Bot.cardShow))
-        const newCard = document.createElement('img');
-        const cardRefId = card;
-        let opt = false;
-        newCard.addEventListener(('click'), (e) => {
-          if(toDescart > 0){
-          // Select to descart
-          opt = !opt;
+      // const current_cardsEl =  document.createElement('div');
 
-          e.target.style.backgroundColor = 'red';
-          e.target.style.border = opt ? '2px solid red' : '0';
-          e.target.style.borderRadius = opt ? '4px' : '0';
+      // const ok_button = document.createElement('button');
+      // ok_button.innerText = 'Concluido';
+      // ok_button.style = `background-color: #339922; color: #eee; width: 50%; height: 40px; z-index: 3; border: none; border-radius: 8px;`
 
-          selection.push(cardRefId);
-          console.log(selection)
-          toDescart --;
-
-          descartContainerEl.insertAdjacentElement('beforeend', ok_button);
-          }
-        });
-
-        newCard.src = card.art;
-        newCard.style.width = '60px';
-
-        current_cardsEl.append(newCard);
-      });
-
-      descartContainerEl.innerText = `Selecione ${toDescart} cartas para descartar`;
-      descartContainerEl.insertAdjacentElement('beforeend', current_cardsEl);
+        //ação
+        function action() {
+          
+      }
+        
+        
       
-      document.body.insertAdjacentElement('beforebegin', descartContainerEl);
+      // descartContainerEl.style = `
+      // color: #eee;
+      // display: flex;
+      // flex-direction: column;
+      // align-items: center;
+      // position: absolute; left: 50%; top: 50%;
+      // transform: translate(-50%, -50%);
+      // border-radius: 5px;
+      // padding: 50px 20px;
+      // background-color: #aaa; width: 96%; z-index: 3;
+      // `
+      // current_cardsEl.style = `
+      // margin: 50px 0;
+      // display: flex;
+      // justify-content: center;
+      // align-items: center;
+      // border-radius: 5px;
+      // background-color: #fff; width: 96%; height: 100px; z-index: 3;
+      // `
+
+      // Player.hand.forEach(card => {
+      //   //Bot.places.handEl.insertAdjacentElement('beforeend', cardFunctions(card, Bot).draw(Bot.showCard))
+      //   const newCard = document.createElement('img');
+      //   const cardRefId = card;
+      //   let opt = false;
+      //   newCard.addEventListener(('click'), (e) => {
+      //     if(toDescart > 0){
+      //     // Select to descart
+      //     opt = !opt;
+
+      //     e.target.style.backgroundColor = 'red';
+      //     e.target.style.border = opt ? '2px solid red' : '0';
+      //     e.target.style.borderRadius = opt ? '4px' : '0';
+
+      //     selection.push(cardRefId);
+      //     console.log(selection)
+      //     toDescart --;
+
+      //     descartContainerEl.insertAdjacentElement('beforeend', ok_button);
+      //     }
+      //   });
+
+      //   newCard.src = card.art;
+      //   newCard.style.width = '60px';
+
+      //   current_cardsEl.append(newCard);
+      // });
+
+      // descartContainerEl.innerText = `Selecione ${toDescart} ${toDescart <= 1 ? 'CARTA' : 'CARTAS'} para descartar`;
+      // descartContainerEl.insertAdjacentElement('beforeend', current_cardsEl);
+      
+      // document.body.insertAdjacentElement('beforebegin', descartContainerEl);
     }
 
     Player.updateHand();
@@ -202,53 +210,49 @@ function CardFunctions(cardId, Player) {
     display: flex;
     flex-direction: column;
 
-
     background-color: #00000090;
     width: 100%;
+    height: 100%;
+    border: 1px solid red;
     padding: 3px;
   `
       // Adicionar opcão para as cartas
   const activeCard = document.createElement('button'); // se possivel
   activeCard.style =
   `
-    height: 15px;
+    height: 50%;
     background-color: #2a4;
     color: #eee;
     border: none;
     margin: 1px 0;
-    
-    font-size: 6pt;
   `;
   activeCard.innerText = 'Ativar';
 
   const setCard = document.createElement('button'); // se possivel
   setCard.style =
   `
-    height: 15px;
+    height: 50%;    
     background-color: #f23;
     color: #eee;
     border: none;
     margin: 1px 0;
-    
-    font-size: 6pt;
   `;
   setCard.innerText = 'Colocar';
 
   const info = document.createElement('button');
   info.style =
   `
-    height: 15px;
+    height: 50%;  
     background-color: #59c;
     color: #eee;
     border: none;
     margin: 1px 0;
-    
-    font-size: 6pt;
   `;
   info.innerText = 'info';
 
   function cardOptions(cardEl, cardRef, target){
-    optionsPanel.style.visibility = options && Player.cardShow ? 'visible' : 'hidden';
+    // esconde todas as cartas do inimigo
+    optionsPanel.style.visibility = options && Player.showCard ? 'visible' : 'hidden';
     
     activeCard.onclick = function() {
       console.log('active card');
@@ -279,11 +283,14 @@ function CardFunctions(cardId, Player) {
       cardView.style.visibility = 'visible';
 
       card_vw.innerHTML = '';
-
-      card_vw.insertAdjacentElement('beforeend', cardEl);
-
-      cardEl.style.width = visible ? '300px' : '70px';
-      cardEl.style.borderRadius = visible ? '20px' : '2px';
+      
+      const tempImg = document.createElement('img');
+      tempImg.src = cardId.art;
+      
+      tempImg.style.width = '300px';
+      tempImg.style.border = '2px solid white';
+      tempImg.style.borderRadius = '20px';
+      card_vw.insertAdjacentElement('beforeend', tempImg);
 
       document.body.insertAdjacentElement('beforeend', cardView);
     }
@@ -298,7 +305,8 @@ function CardFunctions(cardId, Player) {
     return `${cardId.cardName} Descrição da carta: ${cardId.description}`;
   }
 
-  function draw(cardShow) {
+  // desenha o objeto da carta
+  function draw(showCard) {
     const cardEl = document.createElement('div');
     const cardRef = document.createElement('img');
     cardEl.style.position = 'relative';
@@ -306,8 +314,8 @@ function CardFunctions(cardId, Player) {
     cardEl.style.flexDirection = 'column';
     cardEl.style.alignItems = 'center';
     
-    cardRef.src = cardShow ? cardId.art : cardId.verse;
-    cardRef.style.width = '50px';
+    cardRef.src = showCard ? cardId.art : cardId.verse;
+    cardRef.style.width = '65px';
     cardRef.style.margin = '1px';
 
     cardRef.addEventListener('click', (e) => {
@@ -327,3 +335,5 @@ function CardFunctions(cardId, Player) {
 
   return card;
 }
+
+export default CardFunctions;

@@ -1,0 +1,2 @@
+Fazer o montante listavel
+criar a area de descarte e fazer ela listavel

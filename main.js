@@ -15,9 +15,9 @@ const opponents = [];
 let update = true;
 let initGame;
 
-const bot_player = Bot('Bot', deck, false);
+const bot_player = Player('Bot', 'bot', deck, true);
 
-const player = Player('Player', deck, true);
+const player = Player('Player', 'self', deck, true);
 
 function GameEngine() {
   const Game = {}
@@ -40,22 +40,48 @@ function GameEngine() {
     Game.Actions.drawFive(bot_player);
     Game.Actions.drawFive(player);
 
-    opponents.push(bot_player)
+    opponents.push(bot_player);
     //console.log('oponents', opponents)
+
+    Game.Actions.startMatch();
   }
 
   function SearchForOpponent() {
-    
+    const opponent = {
+      found: false,
+
+      opponent_player: {}
+    }
+
+    if(opponent.found) {
+      console.log('Play with: ' + opponent.opponent_player);
+    }
   }
 
   function PlayWithBot() {
-    
+    console.log('Play with Bot');
+
+    return bot_player;
+  }
+
+  function Match() {
+    // players.push(player)
+    // players.push(SearchForOpponent().found ? SearchForOpponent().opponent_player : PlayWithBot());
+    //console.log('Partida iniciada. JOGADORES: ' + player.name, opponents);
   }
 
   Game.Actions = {
+    startMatch() {
+      Match();
+    },
+
+    matchTurns(){
+      
+    },
+
     //Regra de jogo
     drawFive(player) {
-      console.log(`${player.name.name}: Draw 5 cards from deck`)
+      //console.log(`${player.name}: Draw 5 cards from deck`)
       for(let i = 0; i < 5; i++){
         player.hand.push(deck.draw());
       }
@@ -71,7 +97,8 @@ function GameEngine() {
 
 const game = GameEngine();
 
-game.Init();
+window.addEventListener('load', game.Init);
+
 
 // const playerStatsEl = document.querySelector('#player_status');
 

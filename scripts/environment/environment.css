@@ -18,10 +18,12 @@
 }
 
 #battlefieldEl {
-  width: 90%;
+  width: 370px;
+  height: 100vh;
 
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 #battlefieldEl :nth-child(1) { order: 1; }
 #battlefieldEl :nth-child(2) { order: 3; }

@@ -13,6 +13,8 @@
     *{
       font-family: Arial, Helvetica, sans-serif;
       box-sizing: border-box;
+
+      image-rendering: optimizeQuality;
     }
 
     body {
@@ -23,6 +25,7 @@
       flex-direction: column;
 
       align-items:center;
+      justify-content: center;
     }
 
     .cardPanel{
@@ -98,11 +101,12 @@
 <body>
 
   <div id="battlefieldEl">
+    <!--
     <div id="opponent">
 
       <div id="opponentField">
         <div class="opponent_handEl">
-          <!-- Retorna resultados do oponente -->
+           Retorna resultados do oponente 
           <div id="player_status"> Esperando por oponente... </div>
         </div>
         <div class="opponent_fieldEl">
@@ -111,7 +115,8 @@
           <div class="opponent_amountEl"></div>
         </div>
       </div>
-    </div>
+    </div> 
+  -->
   </div>
 
   <div class="options">
@@ -127,7 +132,6 @@
   </div>
 
   <script type="module" src="./main.js"></script>
-  <script src="./scripts/CardFunctions.js"></script>
 
   <script src="./scripts/environment/environment.js"></script>
 
