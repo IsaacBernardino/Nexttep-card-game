@@ -1,13 +1,17 @@
 import CardFunctions from "./CardFunctions.js";
 
-function Player (name, type, deck, isshowCard, GamePhasesManager) {
+function Player ({name, type, deck, descart, GamePhasesManager}) {
   const player = {}
+
+  // variavel de controle do jogador
+  player.currentPlayer = false;
 
   player.name = name;
   // tipo do jogador: 'SELF', 'ALLY', 'OPPONENT', 'BOT'
-  player.type = type || 'BOT';
+  player.type = type || 'OPPONENT';
 
   player.deck = deck;
+  player.descart = descart;
   player.showCard;
 
   player.GamePhasesManager = GamePhasesManager;
@@ -21,17 +25,17 @@ function Player (name, type, deck, isshowCard, GamePhasesManager) {
   player.hand = [];
 
   player.init = init;
-  player.addCardOnHand = addCardOnHand;
+  player.drawOne = drawOne;
   
-  player.drawPlayer = drawPlayer;
+  player.RenderHand = RenderHand;
 
   player.drawFive = drawFive;
   player.updateHand = updateHand;
 
   // recuros de ambiente
-  const ev = environment(player.showCard);
+  const ev = environment();
 
-  // PLACES
+  // PLACES - Elementos HTML fornecidos pelo environment.js
   player.places = {
     battlefield: ev.battlefield,
     fieldEl: ev.fieldEl,
@@ -41,47 +45,48 @@ function Player (name, type, deck, isshowCard, GamePhasesManager) {
   }
 
   function init() {
-    if(player.type === 'bot' || player.type === 'opponent') {
-      player.showCard = false;
+    player.places.battlefield.insertAdjacentText('beforeend', player.name)
+    if(player.type === 'OPPONENT') {
+      //temp
+      player.showCard = true;
       player.places.battlefield.style.flexDirection = 'column-reverse';
       player.places.fieldEl.style.flexDirection = 'column-reverse';
-
-      //console.log('Init: ' + player.name)
     } else {
       player.showCard = true;
     }
 
     player.amountScore = 0;
-    console.log(`${Player.name}: started.`)
+    console.log(`${player.name}, ${player.type}: started.`)
+  }
+  // Renderiza as cartas na mão do jogador
+  // MUITO IMPORTANTE
+  function RenderHand(){
+    player.hand.forEach(card => {
+      player.places.handEl.append(cardFunctions(card, player).draw(player.showCard));
+    });
   }
 
+  // puxa uma unica carta do deck
+  function drawOne () {
+    player.hand.push(deck.draw());
+    player.updateHand();
+  }
+
+  // pucha 5 cartas
   function drawFive() {
     for(let i = 0; i < 5; i++){
       player.hand.push(deck.draw());
     }
-
     updateHand();
   }
 
+  // Atualiza os elementos na mão do jogador
   function updateHand() {
     // limpar toda a area antes de atualizar
     player.places.handEl.innerHTML = '';
 
     player.hand.forEach(card => {
-      //player.places.handEl.insertAdjacentElement('beforeend', cardFunctions(card, player).draw(player.showCard))
       player.places.handEl.append(CardFunctions(card, player).draw(player.showCard));
-    });
-  }
-
-  function addCardOnHand () {
-    player.hand.push(deck.draw());
-    player.updateHand();
-  }
-
-  function drawPlayer(){
-    player.hand.forEach(card => {
-      //handEl.insertAdjacentElement('beforeend', cardFunctions(card, player).draw(player.showCard))
-      player.places.handEl.append(cardFunctions(card, player).draw(player.showCard));
     });
   }
 

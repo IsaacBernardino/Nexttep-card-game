@@ -1,22 +1,3 @@
-/* OPONENTE */
-#opponentField {
-  display: flex;
-  flex-direction: column; /* Se for inimigo :reverce-column */
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
-  padding: 2px;
-  outline: 1px solid #000;
-
-  margin: 5px 0;
-
-  color: #fff;
-
-  font-size: 14pt;
-  text-align: center;
-}
-
 #battlefieldEl {
   width: 370px;
   height: 100vh;
@@ -37,15 +18,15 @@
 
   width: 100%;
   padding: 2px;
-  outline: 1px solid #000;
 
   margin: 5px 0;
 }
 
  /* ESTILIZAÇÂO DO CONTAINER //HAND */
-.handEl, .opponent_handEl{
-  background-color: #000000;
+.handEl{
+  background-color: #11223310;
   width: 100%;
+  min-height: 110px;
 
   overflow-x: auto;
 
@@ -56,7 +37,7 @@
 }
 
 /* ESTILIZAÇÂO DO CONTAINER //FIELD */
-.fieldEl, .opponent_fieldEl{
+.fieldEl{
   background-color: #000000aa;
   width: 60%;
   height: 150px;
@@ -72,7 +53,7 @@
 }
 
 /**/
-.amountEl, .spellsEl, .opponent_amountEl, .opponent_spellsEl{
+.amountEl, .spellsEl{
   background-color: #113355;
   border: 2px solid white;
   width: 50px;
@@ -86,7 +67,7 @@
   align-items: center;
 }
 
-.spellsEl, .opponent_spellsEl{
+.spellsEl {
   width: 90%;
   height: 70px;
 
@@ -117,4 +98,10 @@
   align-items: center;
 
   color: #eee;
+}
+
+.descartEl {
+  background-color: transparent;
+  color: #113355;
+  font-weight: 600;
 }

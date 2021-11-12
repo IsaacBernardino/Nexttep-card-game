@@ -128,7 +128,7 @@ export const SelectionContainer = (placeOfTheCards, count, action) => {
     cards_to_select.append(newCard.cardElement);
   });
   
-  containerEl.innerText = `Selecione ${selectorCount} ${selectorCount < 1 ? 'CARTA' : 'CARTAS'}`;
+  containerEl.innerText = `Selecione ${selectorCount} ${selectorCount <= 1 ? 'CARTA' : 'CARTAS'}`;
   containerEl.insertAdjacentElement("beforeend", cards_to_select);
 
   document.body.insertAdjacentElement("beforebegin", containerEl);
@@ -137,7 +137,9 @@ export const SelectionContainer = (placeOfTheCards, count, action) => {
 
 }
 
-function button(sx, sy, innerText) {
+
+// cria um elemento botão
+export const button = (sx, sy, innerText) => {
   const button = document.createElement('button');
   button.innerText = innerText;
   button.style = `background-color: #339922; color: #eee; width: ${sx}px; height: ${sy}px; z-index: 3; border: none; border-radius: 8px;`;

@@ -1,103 +1,237 @@
 import Deck from "./scripts/Deck.js";
+import Descart from "./scripts/Descart.js";
 import Player from "./scripts/Player.js";
-import Bot from "./scripts/bot.js";
 
-import GamePhases from "./scripts/GamePhases.js";
+import GamePhases from "./scripts/GamePhases.js"; 
+import CardFunctions from "./scripts/CardFunctions.js";
 
-const GamePhasesManager = GamePhases();
+// const GamePhasesManager = GamePhases();
 
-const deck = Deck();
+const CFunctions = CardFunctions();
 
-const opponents = [];
+const Game = () => {
+  const PhasesManager = GamePhases(); 
+  // Renderizar area do deck assim que instanciado
+  const deck = Deck();
+  //descart
+  const players = [
+    // Oponente
+    new Player({
+      name: 'BOT',
+      type: 'OPPONENT',
+      deck: deck,
+      //descart,
+      GamePhasesManager: PhasesManager
+    }),
+    // Quando um jogador é criado renderiza o seu lado de jogo automaticamente 
+    new Player({
+      name: 'PLAYER',
+      type: 'SELF',
+      deck: deck,
+      //descart,
+      GamePhasesManager: PhasesManager
+    })
+  ];
 
-// GAME ENGINE
-// Iniciar primeira instacia do jogo quando a pagina for totalmente carregada
-let update = true;
-let initGame;
+  let currentPlayer;
 
-const bot_player = Player('Bot', 'bot', deck, true);
+  // 0 - enemy 1 - player
+  let current = 1;
 
-const player = Player('Player', 'self', deck, true);
+  function init() {
+    //Inicialização do deck
+    // Para evitar erros o deck é inicializado antes dos jogadores
+    deck.init();
+    // Inicialização dos jogadores
+    // todos os jogadres pucham 5 cartas iniciais
+    players.forEach(player => {
+      player.init();
+      player.drawFive();
+    });
 
-function GameEngine() {
-  const Game = {}
-
-  Game.turns = 0;
-
-  Game.Init = Init;
-  Game.SearchForOpponent = SearchForOpponent;
-  Game.PlayWithBot = PlayWithBot;
-
-  function Init () {
-    Game.turns = 0;
-
-    deck.init()
-    deck.makeDeck()
-
-    bot_player.init();
-    player.init();
-
-    Game.Actions.drawFive(bot_player);
-    Game.Actions.drawFive(player);
-
-    opponents.push(bot_player);
-    //console.log('oponents', opponents)
-
-    Game.Actions.startMatch();
+    PhasesManager.DRAW = true;
+    NextPlayer()
   }
 
-  function SearchForOpponent() {
-    const opponent = {
-      found: false,
+  function NextPlayer() {
+    // Definir o jogador da vez
+    currentPlayer = players[current]
+    // O jogador da vez pucha uma carta automaticamento quando o round inicia
+    currentPlayer.currentPlayer = true;
 
-      opponent_player: {}
+    if(PhasesManager.DRAW === true){
+      currentPlayer.drawOne();
+      PhasesManager.DRAW = false;
     }
 
-    if(opponent.found) {
-      console.log('Play with: ' + opponent.opponent_player);
+    PhasesManager.ACTION_PHASE = true;
+    Action();
+  }
+
+  function Action() {
+    requestAnimationFrame(Action)
+    //console.log(PhasesManager)
+    if(PhasesManager.END_PHASE) {
+      console.log('fim de turno');
+      PhasesManager.DRAW = true;
+
+      changePlayer();
+
+      PhasesManager.END_PHASE = false;
     }
-  }
 
-  function PlayWithBot() {
-    console.log('Play with Bot');
+    function changePlayer () {
+      currentPlayer.currentPlayer = false;
+      current = current === 1 ? 0 : 1;
+      currentPlayer = players[current];
+      currentPlayer.currentPlayer = true;
+    }
 
-    return bot_player;
-  }
+    if(PhasesManager.DRAW === true){
+      if(currentPlayer.hand.length > 0){
+        currentPlayer.drawOne();
+      }else {
+        currentPlayer.drawFive();
+      }
+      PhasesManager.DRAW = false;
+      PhasesManager.ACTION_PHASE = true;
+    }
 
-  function Match() {
-    // players.push(player)
-    // players.push(SearchForOpponent().found ? SearchForOpponent().opponent_player : PlayWithBot());
-    //console.log('Partida iniciada. JOGADORES: ' + player.name, opponents);
-  }
+    if(PhasesManager.ACTION_PHASE === true) {
+      console.log("action phase: " + players[current].name + " turn's");
+    }
 
-  Game.Actions = {
-    startMatch() {
-      Match();
-    },
 
-    matchTurns(){
+    if(players[0].currentPlayer) {
+      let values = [];
+      players[0].hand.forEach((card, index) => {
+        values.push(card.value);
+      });
+
+
+      players[0].hand.forEach((c,i) => {
+        if(c.value === getMaxOfArray(values)) {
+          // ativar a carta com mais valor
+        }
+      });
+
       
-    },
 
-    //Regra de jogo
-    drawFive(player) {
-      //console.log(`${player.name}: Draw 5 cards from deck`)
-      for(let i = 0; i < 5; i++){
-        player.hand.push(deck.draw());
+      function getMaxOfArray(numArray) {
+        return Math.max.apply(null, numArray);
       }
 
-      player.updateHand();
+      GamePhases.END_PHASE = true;
+    }
+
+    if(deck.currentCards <= 0) {
+      console.log('endGame');
+      cancelAnimationFrame(Action);
+      console.log(`${players[0]} || ${players[1]}`);
     }
   }
 
-  //console.log(Game.Actions);
-
-  return Game;
+  init()
 }
 
-const game = GameEngine();
+Game();
 
-window.addEventListener('load', game.Init);
+// const deck = Deck();
+// const descart = Descart();
+
+// const opponents = [];
+
+// // GAME ENGINE
+// // Iniciar primeira instacia do jogo quando a pagina for totalmente carregada
+// let update = true;
+// let initGame;
+
+// const bot_player = Player('Bot', 'bot', deck, descart, true);
+
+// const player = Player('Player', 'self', deck, descart, true);
+
+// function GameEngine() {
+//   const Game = {}
+
+//   Game.turns = 0;
+
+//   Game.Init = Init;
+//   Game.SearchForOpponent = SearchForOpponent;
+//   Game.PlayWithBot = PlayWithBot;
+
+//   function Init () {
+//     Game.turns = 0;
+
+//     deck.init();
+//     deck.makeDeck();
+    
+//     descart.makeDescart();
+//     descart.updateDescart()
+
+//     bot_player.init();
+//     player.init();
+
+//     Game.Actions.drawFive(bot_player);
+//     Game.Actions.drawFive(player);
+
+//     opponents.push(bot_player);
+//     //console.log('oponents', opponents)
+
+//     Game.Actions.startMatch();
+//   }
+
+//   function SearchForOpponent() {
+//     const opponent = {
+//       found: false,
+
+//       opponent_player: {}
+//     }
+
+//     if(opponent.found) {
+//       console.log('Play with: ' + opponent.opponent_player);
+//     }
+//   }
+
+//   function PlayWithBot() {
+//     console.log('Play with Bot');
+
+//     return bot_player;
+//   }
+
+//   function Match() {
+//     // players.push(player)
+//     // players.push(SearchForOpponent().found ? SearchForOpponent().opponent_player : PlayWithBot());
+//     //console.log('Partida iniciada. JOGADORES: ' + player.name, opponents);
+//   }
+
+//   Game.Actions = {
+//     startMatch() {
+//       Match();
+//     },
+
+//     matchTurns(){
+      
+//     },
+
+//     //Regra de jogo
+//     drawFive(player) {
+//       //console.log(`${player.name}: Draw 5 cards from deck`)
+//       for(let i = 0; i < 5; i++){
+//         player.hand.push(deck.draw());
+//       }
+
+//       player.updateHand();
+//     }
+//   }
+
+//   //console.log(Game.Actions);
+
+//   return Game;
+// }
+
+// const game = GameEngine();
+
+// window.addEventListener('load', game.Init);
 
 
 // const playerStatsEl = document.querySelector('#player_status');

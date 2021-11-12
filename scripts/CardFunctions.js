@@ -8,6 +8,8 @@ function CardFunctions(cardId, Player) {
   card.applyEffect = applyEffect;
   card.setCardField = setCardField;
 
+  card.cardOptions = cardOptions;
+
   let options = false;
 
   // Colocar carta no campo
@@ -43,26 +45,24 @@ function CardFunctions(cardId, Player) {
     }
 
     if(cardId.effect.DRAW === true) {
-      Player.addCardOnHand();
+      Player.drawOne();
     }
 
     if(cardId.effect.DESCART.descart >= 1 && Player.hand.length > 0) {
       let toDescart = cardId.effect.DESCART.descart;
-      SelectionContainer(Player.hand, toDescart, (cardsSelections) => {
-        let selection = cardsSelections;
+      SelectionContainer(Player.hand, toDescart, (selection) => {
         // Comparar o array com as cartas para deletar e a mão depois descartar
         const cards = [];
 
         selection.forEach(c => {
           const card = selection.find(element => element === c);
-          const cardIndex = Player.hand.indexOf(card);
+          const cardIndex = Player.hand.indexOf(card.cardRefId);
 
           if(card != null){
             // Criar função no player para descartar cartas
             Player.hand.splice(cardIndex, 1);
             Player.updateHand();
 
-            console.log(card.cardRefId);
             // criar area de descarte
             // DECK --> descarte
           }else {
@@ -70,79 +70,11 @@ function CardFunctions(cardId, Player) {
           }
         });
       });
-      // TO-DO Implementar seleção para fazer o descarte
-      
-      // console.log('target descard ' + cardId.effect.DESCART.descart + ' card');
-      // const descartContainerEl = document.createElement('div');
-
-      // const current_cardsEl =  document.createElement('div');
-
-      // const ok_button = document.createElement('button');
-      // ok_button.innerText = 'Concluido';
-      // ok_button.style = `background-color: #339922; color: #eee; width: 50%; height: 40px; z-index: 3; border: none; border-radius: 8px;`
-
-        //ação
-        function action() {
-          
-      }
-        
-        
-      
-      // descartContainerEl.style = `
-      // color: #eee;
-      // display: flex;
-      // flex-direction: column;
-      // align-items: center;
-      // position: absolute; left: 50%; top: 50%;
-      // transform: translate(-50%, -50%);
-      // border-radius: 5px;
-      // padding: 50px 20px;
-      // background-color: #aaa; width: 96%; z-index: 3;
-      // `
-      // current_cardsEl.style = `
-      // margin: 50px 0;
-      // display: flex;
-      // justify-content: center;
-      // align-items: center;
-      // border-radius: 5px;
-      // background-color: #fff; width: 96%; height: 100px; z-index: 3;
-      // `
-
-      // Player.hand.forEach(card => {
-      //   //Bot.places.handEl.insertAdjacentElement('beforeend', cardFunctions(card, Bot).draw(Bot.showCard))
-      //   const newCard = document.createElement('img');
-      //   const cardRefId = card;
-      //   let opt = false;
-      //   newCard.addEventListener(('click'), (e) => {
-      //     if(toDescart > 0){
-      //     // Select to descart
-      //     opt = !opt;
-
-      //     e.target.style.backgroundColor = 'red';
-      //     e.target.style.border = opt ? '2px solid red' : '0';
-      //     e.target.style.borderRadius = opt ? '4px' : '0';
-
-      //     selection.push(cardRefId);
-      //     console.log(selection)
-      //     toDescart --;
-
-      //     descartContainerEl.insertAdjacentElement('beforeend', ok_button);
-      //     }
-      //   });
-
-      //   newCard.src = card.art;
-      //   newCard.style.width = '60px';
-
-      //   current_cardsEl.append(newCard);
-      // });
-
-      // descartContainerEl.innerText = `Selecione ${toDescart} ${toDescart <= 1 ? 'CARTA' : 'CARTAS'} para descartar`;
-      // descartContainerEl.insertAdjacentElement('beforeend', current_cardsEl);
-      
-      // document.body.insertAdjacentElement('beforebegin', descartContainerEl);
     }
 
     Player.updateHand();
+
+    return true;
   }
 
   function activeOnAmount() {
@@ -172,8 +104,16 @@ function CardFunctions(cardId, Player) {
     // Verificar se na mão contem cartas iguais 
     const sameCards = Player.hand.filter(card => cardId.id == card.id);
     console.log('cartas iguais: ', sameCards.length)
-    //Player.GamePhasesManager.ACTION_PHASE = false; // finalizar fase de ação quando todas as ações for concluidas
-    //Player.GamePhasesManager.END_PHASE = true; // proximo jogador
+
+    if(sameCards.length > 0 ) {
+      sameCards.forEach(card => {
+        SelectionContainer(sameCards, sameCards.length, applyEffect)
+      });
+    } else { 
+      Player.GamePhasesManager.ACTION_PHASE = false; // finalizar fase de ação quando todas as ações for concluidas
+      Player.GamePhasesManager.END_PHASE = true; // proximo jogador
+    }
+
   }
 
   function cardSpellField(isSet) {
@@ -250,6 +190,7 @@ function CardFunctions(cardId, Player) {
   `;
   info.innerText = 'info';
 
+  // Opções para a carta
   function cardOptions(cardEl, cardRef, target){
     // esconde todas as cartas do inimigo
     optionsPanel.style.visibility = options && Player.showCard ? 'visible' : 'hidden';
@@ -305,27 +246,31 @@ function CardFunctions(cardId, Player) {
     return `${cardId.cardName} Descrição da carta: ${cardId.description}`;
   }
 
-  // desenha o objeto da carta
+  // Desenha o objeto da carta
   function draw(showCard) {
     const cardEl = document.createElement('div');
-    const cardRef = document.createElement('img');
     cardEl.style.position = 'relative';
     cardEl.style.display = 'flex';
     cardEl.style.flexDirection = 'column';
     cardEl.style.alignItems = 'center';
-    
+
+    const cardRef = document.createElement('img');
     cardRef.src = showCard ? cardId.art : cardId.verse;
     cardRef.style.width = '65px';
     cardRef.style.margin = '1px';
 
+    // Adiciona evento de click na carta
     cardRef.addEventListener('click', (e) => {
       options = !options;
-
+      if(Player.currentPlayer){
       e.target.style.backgroundColor = 'red';
       e.target.style.border = options ? '2px solid red' : '0';
       e.target.style.borderRadius = options ? '4px' : '0';
 
       cardOptions(cardRef, cardEl, this); // this = target
+      } else {
+        console.log('is not your action move')
+      }
     });
 
     cardEl.insertAdjacentElement('beforeend', cardRef);

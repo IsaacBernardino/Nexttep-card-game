@@ -28,7 +28,7 @@ function Deck() {
     CARDS[8], CARDS[8],
     CARDS[1],
     CARDS[6],
-    CARDS[10],CARDS[11],CARDS[12], CARDS[13], CARDS[14], CARDS[15], CARDS[16], CARDS[17],
+    //CARDS[10],CARDS[11],CARDS[12], CARDS[13], CARDS[14], CARDS[15], CARDS[16], CARDS[17],
   ]
 
   // Variaveis internas
@@ -37,7 +37,7 @@ function Deck() {
   // Funções
   mainDeck.init = init;
   mainDeck.draw = draw;
-  mainDeck.makeDeck = makeDeck;
+  mainDeck.RenderDeck = RenderDeck;
   mainDeck.deckShuffle = deckShuffle;
   mainDeck.addCardToDeck = addCardToDeck;
   mainDeck.removeCardFromDeck = removeCardFromDeck;
@@ -49,11 +49,11 @@ function Deck() {
     complete = true;
 
     deckShuffle();
-
+    RenderDeck();
     //console.log('Deck > Main Deck initializing complete...');
   }
 
-  function makeDeck(){
+  function RenderDeck(){
     // Area principal
     const deckDescart = document.createElement('div');
     deckDescart.classList.add('deck-area');
@@ -62,12 +62,8 @@ function Deck() {
     const deckEl = document.createElement('div');
     deckEl.classList.add('deckEl');
     deckEl.innerHTML = mainDeck.currentCards;
-    // Descarte
-    const descartEl = document.createElement('div');
-    descartEl.classList.add('descartEl');
     
     deckDescart.insertAdjacentElement('beforeend', deckEl);
-    deckDescart.insertAdjacentElement('beforeend', descartEl);
 
     // ev = ambiente
     ev.insertAdjacentElement('beforeend', deckDescart);
