@@ -2,7 +2,7 @@ function Player ({name, type, deck, descart, GamePhasesManager}) {
   const player = {}
 
   // variavel de controle do jogador
-  player.currentPlayer = false;
+  player.playerTurn = false;
 
   player.name = name;
   // tipo do jogador: 'SELF', 'ALLY', 'OPPONENT', 'BOT'
@@ -43,10 +43,11 @@ function Player ({name, type, deck, descart, GamePhasesManager}) {
   }
 
   function init() {
-    player.places.battlefield.insertAdjacentText('beforeend', player.name)
+    player.places.battlefield.append(player.name);
+
     if(player.type === 'OPPONENT') {
       //temp
-      player.showCard = true;
+      player.showCard = false;
       player.places.battlefield.style.flexDirection = 'column-reverse';
       player.places.fieldEl.style.flexDirection = 'column-reverse';
     } else {
@@ -54,13 +55,13 @@ function Player ({name, type, deck, descart, GamePhasesManager}) {
     }
 
     player.amountScore = 0;
-    console.log(`${player.name}, ${player.type}: started.`)
+    //console.log(`${player.name}, ${player.type}: started.`)
   }
   // Renderiza as cartas na mão do jogador
   // MUITO IMPORTANTE
   function RenderHand(){
     player.hand.forEach(card => {
-      player.places.handEl.append(cardFunctions(card, player).draw(player.showCard));
+      player.places.handEl.append(card.Functions(card, player).draw(player.showCard));
     });
   }
 
@@ -84,7 +85,7 @@ function Player ({name, type, deck, descart, GamePhasesManager}) {
     player.places.handEl.innerHTML = '';
 
     player.hand.forEach(card => {
-      player.places.handEl.append(CardFunctions(card, player).draw(player.showCard));
+      player.places.handEl.append(card.Functions(card, player).draw(player.showCard));
     });
   }
 

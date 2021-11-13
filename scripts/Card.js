@@ -64,7 +64,7 @@ class Card {
     };
   } // Fim do construtor
 
-  CardFunctions(cardId, Player) {
+  Functions(cardId, Player) {
     const card = {};
 
     card.draw = draw;
@@ -110,27 +110,27 @@ class Card {
       }
 
       if (cardId.effect.DESCART.descart >= 1 && Player.hand.length > 0) {
-        let toDescart = cardId.effect.DESCART.descart;
-        SelectionContainer(Player.hand, toDescart, (selection) => {
-          // Comparar o array com as cartas para deletar e a mão depois descartar
-          const cards = [];
+        // let toDescart = cardId.effect.DESCART.descart;
+        // SelectionContainer(Player.hand, toDescart, (selection) => {
+        //   // Comparar o array com as cartas para deletar e a mão depois descartar
+        //   const cards = [];
 
-          selection.forEach((c) => {
-            const card = selection.find((element) => element === c);
-            const cardIndex = Player.hand.indexOf(card.cardRefId);
+        //   selection.forEach((c) => {
+        //     const card = selection.find((element) => element === c);
+        //     const cardIndex = Player.hand.indexOf(card.cardRefId);
 
-            if (card != null) {
-              // Criar função no player para descartar cartas
-              Player.hand.splice(cardIndex, 1);
-              Player.updateHand();
+        //     if (card != null) {
+        //       // Criar função no player para descartar cartas
+        //       Player.hand.splice(cardIndex, 1);
+        //       Player.updateHand();
 
-              // criar area de descarte
-              // DECK --> descarte
-            } else {
-              console.error("error to descart");
-            }
-          });
-        });
+        //       // criar area de descarte
+        //       // DECK --> descarte
+        //     } else {
+        //       console.error("error to descart");
+        //     }
+        //   });
+        // });
       }
 
       Player.updateHand();
@@ -168,14 +168,14 @@ class Card {
       const sameCards = Player.hand.filter((card) => cardId.id == card.id);
       console.log("cartas iguais: ", sameCards.length);
 
-      if (sameCards.length > 0) {
-        sameCards.forEach((card) => {
-          SelectionContainer(sameCards, sameCards.length, applyEffect);
-        });
-      } else {
+      // if (sameCards.length > 0) {
+      //   sameCards.forEach((card) => {
+      //     SelectionContainer(sameCards, sameCards.length, applyEffect);
+      //   });
+      // } else {
         Player.GamePhasesManager.ACTION_PHASE = false; // finalizar fase de ação quando todas as ações for concluidas
         Player.GamePhasesManager.END_PHASE = true; // proximo jogador
-      }
+      //}
     }
 
     function cardSpellField(isSet) {
@@ -216,6 +216,7 @@ class Card {
     height: 100%;
     border: 1px solid red;
     padding: 3px;
+    
   `;
     // Adicionar opcão para as cartas
     const activeCard = document.createElement("button"); // se possivel
@@ -225,6 +226,7 @@ class Card {
     color: #eee;
     border: none;
     margin: 1px 0;
+    font-size: 8px;
   `;
     activeCard.innerText = "Ativar";
 
@@ -235,6 +237,7 @@ class Card {
     color: #eee;
     border: none;
     margin: 1px 0;
+    font-size: 8px;
   `;
     setCard.innerText = "Colocar";
 
@@ -245,6 +248,7 @@ class Card {
     color: #eee;
     border: none;
     margin: 1px 0;
+    font-size: 8px;
   `;
     info.innerText = "info";
 
@@ -289,7 +293,7 @@ class Card {
 
         tempImg.style.width = "300px";
         tempImg.style.border = "2px solid white";
-        tempImg.style.borderRadius = "20px";
+        tempImg.style.borderRadius = "0";
         card_vw.insertAdjacentElement("beforeend", tempImg);
 
         document.body.insertAdjacentElement("beforeend", cardView);
@@ -315,13 +319,13 @@ class Card {
 
       const cardRef = document.createElement("img");
       cardRef.src = showCard ? cardId.art : cardId.verse;
-      cardRef.style.width = "65px";
+      cardRef.style.width = "50px";
       cardRef.style.margin = "1px";
 
       // Adiciona evento de click na carta
       cardRef.addEventListener("click", (e) => {
         options = !options;
-        if (Player.currentPlayer) {
+        if (Player.playerTurn) {
           e.target.style.backgroundColor = "red";
           e.target.style.border = options ? "2px solid red" : "0";
           e.target.style.borderRadius = options ? "4px" : "0";

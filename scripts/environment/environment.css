@@ -26,7 +26,7 @@
 .handEl{
   background-color: #11223310;
   width: 100%;
-  min-height: 110px;
+  min-height: 75px;
 
   overflow-x: auto;
 
@@ -38,28 +38,29 @@
 
 /* ESTILIZAÇÂO DO CONTAINER //FIELD */
 .fieldEl{
-  background-color: #000000aa;
-  width: 60%;
-  height: 150px;
+  box-shadow: #00112265 0 0 10px;
+  width: 65%;
+  height: 160px;
 
   display: flex;
   flex-direction: column; /* Se for inimigo :reverce-column */
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
 
-  border: 1px solid;
-  border-color: #ffffff;
-  border-radius: 5px;
+  border-radius: 3px;
+
+  padding: 5px 0;
+  margin: 5px 0;
 }
 
 /**/
 .amountEl, .spellsEl{
-  background-color: #113355;
-  border: 2px solid white;
-  width: 50px;
-  height: 70px;
-
-  margin: 2px 0;
+  
+  box-shadow: #00112265 0 0 10px;
+  
+  width: 40px;
+  height: 55px;
+  
   border-radius: 5px;
 
   display: flex;
