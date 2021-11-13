@@ -1,5 +1,3 @@
-import CardFunctions from "./CardFunctions.js";
-
 function Player ({name, type, deck, descart, GamePhasesManager}) {
   const player = {}
 
