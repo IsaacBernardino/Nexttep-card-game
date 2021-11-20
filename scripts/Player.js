@@ -43,15 +43,15 @@ function Player ({name, type, deck, descart, GamePhasesManager}) {
   }
 
   function init() {
-    player.places.battlefield.append(player.name);
-
     if(player.type === 'OPPONENT') {
       //temp
       player.showCard = false;
       player.places.battlefield.style.flexDirection = 'column-reverse';
       player.places.fieldEl.style.flexDirection = 'column-reverse';
+      player.places.handEl.style.marginBottom = '-35px';
     } else {
       player.showCard = true;
+      player.places.handEl.style.marginTop = '-35px';
     }
 
     player.amountScore = 0;

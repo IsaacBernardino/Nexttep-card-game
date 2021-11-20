@@ -1,10 +1,38 @@
+.logArea {
+  position: fixed;
+  right: -210px;
+  min-width: 230px;
+  height: 100%;
+
+  background-color: #dd0025;
+  color: #eee;
+
+  border-left: 20px solid #0000aa;
+
+  transition: 0.35s ease-in-out;
+}
+.logArea:hover {
+  right: 0;
+  cursor: pointer;
+}
+
+.logArea h1 {
+  margin: 2px 0;
+
+  border-bottom: 1px solid #fff;
+}
+
 #battlefieldEl {
-  width: 370px;
-  height: 100vh;
+  width: 350px;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  border-radius: 5px;
+
+  padding: 5px 10px;
+  box-shadow: #02234565 0 0 50px;
 }
 #battlefieldEl :nth-child(1) { order: 1; }
 #battlefieldEl :nth-child(2) { order: 3; }
@@ -17,28 +45,21 @@
   align-items: center;
 
   width: 100%;
-  padding: 2px;
-
+  padding: 5px;
   margin: 5px 0;
 }
 
  /* ESTILIZAÇÂO DO CONTAINER //HAND */
 .handEl{
-  background-color: #11223310;
+  display: inline-flex;
   width: 100%;
-  min-height: 75px;
-
   overflow-x: auto;
 
   padding: 3px;
-  
-  display: flex;
-  align-items: center;
 }
 
 /* ESTILIZAÇÂO DO CONTAINER //FIELD */
 .fieldEl{
-  box-shadow: #00112265 0 0 10px;
   width: 65%;
   height: 160px;
 
@@ -49,19 +70,16 @@
 
   border-radius: 3px;
 
-  padding: 5px 0;
-  margin: 5px 0;
+  padding: 2px;
 }
 
 /**/
 .amountEl, .spellsEl{
-  
-  box-shadow: #00112265 0 0 10px;
-  
+  border: 1px solid #33373a35;
   width: 40px;
   height: 55px;
   
-  border-radius: 5px;
+  border-radius: 3px;
 
   display: flex;
   justify-content: center;
@@ -79,7 +97,6 @@
 .deck-area {
   background-color: #00000020;
   width: 100%;
-  height: 55px;
   padding: 5px 0;
 
   display: flex;
@@ -88,17 +105,25 @@
 
 .deckEl, .descartEl{
   background-color: #234;
-  
-  width: 70px;
 
-  border: 3px solid orange;
-  border-radius: 5px;
+  outline: 1px solid orange;
+  border-radius: 1px;
 
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-end;
 
+  font-size: 8pt;
   color: #eee;
+}
+
+.deckEl {
+  background-image: url('../../cards/verso-hq.png');
+  background-size: cover;
+
+  width: 40px;
+  height: 60px;
+  padding: 3px;
 }
 
 .descartEl {
@@ -106,3 +131,93 @@
   color: #113355;
   font-weight: 600;
 }
+
+/* EStilização das opções da carta */
+
+/* optionsPanel.style = `
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+
+    background-color: #00000090;
+    width: 100%;
+    height: 100%;
+    border: 1px solid red;
+    padding: 3px;
+    
+  `;
+    // Adicionar opcão para as cartas
+    const activeCard = document.createElement("button"); // se possivel
+    activeCard.style = `
+    height: 50%;
+    background-color: #2a4;
+    color: #eee;
+    border: none;
+    margin: 1px 0;
+    font-size: 8px;
+  `;
+    activeCard.innerText = "Ativar";
+
+    const setCard = document.createElement("button"); // se possivel
+    setCard.style = `
+    height: 50%;    
+    background-color: #f23;
+    color: #eee;
+    border: none;
+    margin: 1px 0;
+    font-size: 8px;
+  `;
+    setCard.innerText = "Colocar";
+
+    const info = document.createElement("button");
+    info.style = `
+    height: 50%;  
+    background-color: #59c;
+    color: #eee;
+    border: none;
+    margin: 1px 0;
+    font-size: 8px;
+  `;optionsPanel.style = `
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+
+  background-color: #00000090;
+  width: 100%;
+  height: 100%;
+  border: 1px solid red;
+  padding: 3px;
+  
+`;
+  // Adicionar opcão para as cartas
+  const activeCard = document.createElement("button"); // se possivel
+  activeCard.style = `
+  height: 50%;
+  background-color: #2a4;
+  color: #eee;
+  border: none;
+  margin: 1px 0;
+  font-size: 8px;
+`;
+  activeCard.innerText = "Ativar";
+
+  const setCard = document.createElement("button"); // se possivel
+  setCard.style = `
+  height: 50%;    
+  background-color: #f23;
+  color: #eee;
+  border: none;
+  margin: 1px 0;
+  font-size: 8px;
+`;
+  setCard.innerText = "Colocar";
+
+  const info = document.createElement("button");
+  info.style = `
+  height: 50%;  
+  background-color: #59c;
+  color: #eee;
+  border: none;
+  margin: 1px 0;
+  font-size: 8px;
+`; */

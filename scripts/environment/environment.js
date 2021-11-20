@@ -29,10 +29,10 @@ function environment(){
   playerField.insertAdjacentElement('beforeend', fieldEl);
   playerField.insertAdjacentElement('beforeend', handEl);
 
-  battlefieldEl.insertAdjacentElement('beforeend', playerField);
-
   // retornando os elementos criados
   places.battlefield = playerField;
+
+  battlefieldEl.insertAdjacentElement('beforeend', playerField);
 
   places.fieldEl   = fieldEl;
   places.amountEl  = amountEl;

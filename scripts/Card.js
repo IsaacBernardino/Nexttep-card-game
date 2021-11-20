@@ -31,7 +31,7 @@ class Card {
     this.id = id;
 
     this.art = art;
-    this.verse = "cards/verso.png";
+    this.verse = "cards/verso-hq.png";
     this.cardName = cardName;
     this.value = value || 0;
     this.description = description || "";
@@ -110,27 +110,27 @@ class Card {
       }
 
       if (cardId.effect.DESCART.descart >= 1 && Player.hand.length > 0) {
-        // let toDescart = cardId.effect.DESCART.descart;
-        // SelectionContainer(Player.hand, toDescart, (selection) => {
-        //   // Comparar o array com as cartas para deletar e a mão depois descartar
-        //   const cards = [];
+        let toDescart = cardId.effect.DESCART.descart;
+        SelectionContainer(Player.hand, toDescart, (selection) => {
+          // Comparar o array com as cartas para deletar e a mão depois descartar
+          const cards = [];
 
-        //   selection.forEach((c) => {
-        //     const card = selection.find((element) => element === c);
-        //     const cardIndex = Player.hand.indexOf(card.cardRefId);
+          selection.forEach((c) => {
+            const card = selection.find((element) => element === c);
+            const cardIndex = Player.hand.indexOf(card.cardRefId);
 
-        //     if (card != null) {
-        //       // Criar função no player para descartar cartas
-        //       Player.hand.splice(cardIndex, 1);
-        //       Player.updateHand();
+            if (card != null) {
+              // Criar função no player para descartar cartas
+              Player.hand.splice(cardIndex, 1);
+              Player.updateHand();
 
-        //       // criar area de descarte
-        //       // DECK --> descarte
-        //     } else {
-        //       console.error("error to descart");
-        //     }
-        //   });
-        // });
+              // criar area de descarte
+              // DECK --> descarte
+            } else {
+              console.error("error to descart");
+            }
+          });
+        });
       }
 
       Player.updateHand();

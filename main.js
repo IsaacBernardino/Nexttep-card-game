@@ -119,7 +119,9 @@ function Match() {
   }
   if (PhasesManager.ACTION_PHASE === true) {
     console.log("ACTION PHASE");
-    activePlayer.places.battlefield.style.outline = '1px solid #000000';
+
+    activePlayer.places.battlefield.style.outline = '1px solid #00000045';
+
     if (activePlayer.type === "OPPONENT") {
       const i = Math.floor(Math.random() * activePlayer.hand.length);
       activePlayer.hand[i]
