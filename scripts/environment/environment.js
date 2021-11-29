@@ -1,4 +1,6 @@
 // PLAYER ENVIRONMENT
+
+// Retorna como objeto e adiciona os elementos da mesa
 function environment(){
   places = {}
 
@@ -29,11 +31,10 @@ function environment(){
   playerField.insertAdjacentElement('beforeend', fieldEl);
   playerField.insertAdjacentElement('beforeend', handEl);
 
+  // Campo de batalha montado
+  battlefieldEl.insertAdjacentElement('beforeend', playerField);
   // retornando os elementos criados
   places.battlefield = playerField;
-
-  battlefieldEl.insertAdjacentElement('beforeend', playerField);
-
   places.fieldEl   = fieldEl;
   places.amountEl  = amountEl;
   places.spellsEl  = spellsEl;
@@ -43,7 +44,7 @@ function environment(){
   places.opponentPlaces.fieldEl   = document.querySelector('#opponentField');
   places.opponentPlaces.amountEl  = document.querySelector('#opponent_amountEl');
   places.opponentPlaces.spellsEl  = document.querySelector('#opponent_spellsEl');
-  places.opponentPlaces.handEl  = document.querySelector('#opponent_handEl');
+  places.opponentPlaces.handEl    = document.querySelector('#opponent_handEl');
 
   return places;
 }

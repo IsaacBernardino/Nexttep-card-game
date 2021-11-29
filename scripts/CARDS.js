@@ -83,8 +83,6 @@ const CARDS = [
     description: '-5',
     type: 'number',
     isSet: {set: false, turns: 0},
-
-    DRAW: true
   }),
 
   new Card({

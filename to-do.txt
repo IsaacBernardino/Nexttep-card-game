@@ -1,6 +1,8 @@
-Retrabalhar o script 'card'
+Retrabalhar o script 'card' [ok 26/11]
 
-Fazer o montante listavel
-criar a area de descarte e fazer ela listavel
+Fazer o montante listavel []
+criar a area de descarte e faze-lo listavel [ok 28/11]
 
-Implementar um sistema de log
+Implementar um sistema de log [ok 24/11]
+
+resolver Bug de seleção de cartas iguais

@@ -1,5 +1,5 @@
 function shuffle(arr) {
-    console.log(`SHUFFLE > Shuffling |${arr.cards.length}| cards...`);
+    //console.log(`SHUFFLE > Shuffling |${arr.cards.length}| cards...`);
 
     let currentIndex = arr.cards.length,  randomIndex;
     // While there remain elements to shuffle...

@@ -23,11 +23,17 @@ function Deck() {
     CARDS[8], CARDS[8], CARDS[8],
     CARDS[9], CARDS[9], CARDS[9],
     // cartas temporarias
-    CARDS[0], CARDS[0],
-    CARDS[3], CARDS[3],
-    CARDS[8], CARDS[8],
-    CARDS[1],
-    CARDS[6],
+    // CARDS[0], CARDS[0], CARDS[0],
+    // CARDS[0], CARDS[0], CARDS[0],
+    // CARDS[0], CARDS[0],
+    // CARDS[3], CARDS[3],
+    // CARDS[8], CARDS[8],
+    // CARDS[1],
+    // CARDS[6],    CARDS[0], CARDS[0],
+    // CARDS[3], CARDS[3],
+    // CARDS[8], CARDS[8],
+    // CARDS[1],
+    // CARDS[6],
     //CARDS[10],CARDS[11],CARDS[12], CARDS[13], CARDS[14], CARDS[15], CARDS[16], CARDS[17],
   ]
 
@@ -36,21 +42,20 @@ function Deck() {
 
   // Funções
   mainDeck.init = init;
-  mainDeck.draw = draw;
+  mainDeck.DrawCard = DrawCard;
   mainDeck.RenderDeck = RenderDeck;
   mainDeck.deckShuffle = deckShuffle;
   mainDeck.addCardToDeck = addCardToDeck;
   mainDeck.removeCardFromDeck = removeCardFromDeck;
 
   function init() {
-    //console.log('Deck > Main Deck initializing...');
+    CreateLog('Deck > Main Deck initializing...');
     mainDeck.currentCards = mainDeck.cards.length;
 
     complete = true;
 
     deckShuffle();
     RenderDeck();
-    //console.log('Deck > Main Deck initializing complete...');
   }
 
   function RenderDeck(){
@@ -77,9 +82,8 @@ function Deck() {
     }
   }
 
-  function draw () {
+  function DrawCard () {
     if(complete && mainDeck.currentCards > 0){
-      //console.log('Deck > Draw a card');
       let card = mainDeck.cards.pop();
       updateDeck();
       return card;
