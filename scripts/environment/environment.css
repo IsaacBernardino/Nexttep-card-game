@@ -1,3 +1,22 @@
+/* SCROLLBAR */
+::-webkit-scrollbar {
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #aaa;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid #00000000;
+  background-clip: padding-box;
+  border-radius: 9999px;
+  background-color: #555;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #eee;
+}
+
 /* AREA DE LOG */
 .logArea {
   position: fixed;
@@ -80,7 +99,7 @@
 
   width: 100%;
   margin: 5px 0;
-  padding: 10px 0;
+  padding: 10px 5px;
 }
 
  /* ESTILIZAÇÂO DO CONTAINER //HAND */
@@ -90,7 +109,7 @@
   min-height: 40px;
   overflow-x: auto;
 
-  padding: 3px;
+  padding: 3px 15px;
 }
 
 /* ESTILIZAÇÂO DO CONTAINER //FIELD */
@@ -115,7 +134,7 @@
   border: 1px solid #00113375;
   width: 40px;
   height: 55px;
-  
+
   border-radius: 3px;
 
   display: flex;

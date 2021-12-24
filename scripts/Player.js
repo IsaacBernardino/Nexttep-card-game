@@ -55,11 +55,9 @@ function Player({ name, type, deck, descart, GamePhasesManager }) {
       player.showCard = false;
       player.places.battlefield.style.flexDirection = "column-reverse";
       player.places.fieldEl.style.flexDirection = "column-reverse";
-      player.places.handEl.style.marginBottom = "-35px";
     } else {
       player.color = '#0000aa'
       player.showCard = true;
-      player.places.handEl.style.marginTop = "-35px";
     }
 
     player.amountScore = 0;
@@ -97,10 +95,10 @@ function Player({ name, type, deck, descart, GamePhasesManager }) {
     player.places.handEl.innerHTML = "";
 
     player.hand.forEach((card) => {
-      player.places.handEl.append(
-        card.Functions(card, player).draw(player.showCard)
+      player.places.handEl.append(card.Functions(card, player).draw(player.showCard)
       );
     });
+    
   }
 
   // Recebe a carta clicada para a ativação

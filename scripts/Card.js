@@ -209,6 +209,7 @@ class Card {
     // Desenha o objeto da carta
     function draw(showCard) {
       const cardEl = document.createElement("div");
+      
       // TODO: Criar css para gerenciar isto
       cardEl.style.position = "relative";
       cardEl.style.display = "flex";
@@ -217,7 +218,7 @@ class Card {
 
       const cardRef = document.createElement("img");
       cardRef.src = showCard ? cardId.art : cardId.verse;
-      cardRef.style.width = "50px";
+      cardRef.style.width = showCard ? "80px" : '30px';
       cardRef.style.margin = "2px";
 
       // Adiciona evento de click na carta
