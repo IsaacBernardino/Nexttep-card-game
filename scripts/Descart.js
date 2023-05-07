@@ -9,27 +9,17 @@ function Descart() {
   descart.addCardToDescart = addCardToDescart;
   descart.updateDescart = updateDescart;
 
-  const ev = document.querySelector("#battlefieldEl");
+  const ev = new Environment();
 
   function Init() {
-    // Area principal
-    const deckDescart = document.querySelector(".deck-area");
-    // Descarte
-    const descartEl = document.createElement("div");
-    descartEl.classList.add("descartEl");
-
-    descartEl.addEventListener('click', descartInfo);
-
-    deckDescart.insertAdjacentElement("beforeend", descartEl);
-
-    // ev = ambiente
-    ev.insertAdjacentElement("beforeend", deckDescart);
+    // Adicionar evento de click na area de descarte
+    ev.places.deck_descart.descart.addEventListener('click', descartInfo);
   }
 
   function descartInfo () {
-    const btn = document.createElement('button') 
-    btn.innerText = 'OK';
-    new SelectionContainer(descart.cards, null,  btn);
+    const button = document.createElement('button') 
+    button.innerText = 'OK';
+    new SelectionContainer(descart.cards, null,  button);
   }
 
   function addCardToDescart(card) {
@@ -47,11 +37,9 @@ function Descart() {
     descartCard.style.width = "40px";
     descartCard.style.position = "absolute";
 
-    const el = document.querySelector(".descartEl");
-
     descart.cards.forEach((c) => {
       descartCard.src = c.art;
-      el.appendChild(descartCard)
+      ev.places.deck_descart.descart.appendChild(descartCard)
     });
   }
 

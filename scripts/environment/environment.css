@@ -1,7 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
 /* SCROLLBAR */
 ::-webkit-scrollbar {
   height: 10px;
 }
+
 ::-webkit-scrollbar-track {
   background: #aaa;
   border-radius: 10px;
@@ -13,28 +16,42 @@
   border-radius: 9999px;
   background-color: #555;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #eee;
+
+
+* {
+  font-family: Poppins, Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+
+  image-rendering: optimizeQuality;
+}
+
+body {
+  background-color: #89a;
+
+  padding: 0;
+  margin: 0;
+
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
 }
 
 /* AREA DE LOG */
 .logArea {
   position: fixed;
-  right: -210px;
-  max-width: 230px;
+  right: 0px;
+  max-width: 200px;
   width: 230px;
   height: 100%;
 
-  background-color: #fff;
+  background-color: #000;
   color: #eee;
 
-  border-left: 20px solid #0000aa;
-
-  transition: 0.35s ease-in-out;
-}
-.logArea:hover {
-  right: 0;
-  cursor: pointer;
+  border-left: 8px solid #0000aa;
 }
 
 .logArea h1 {
@@ -59,7 +76,9 @@
   text-align: center;
 
   font-size: 8pt;
-}.logData::before {
+}
+
+.logData::before {
   content: '';
   display: block;
   position: absolute;
@@ -73,116 +92,197 @@
 
   transform: rotateZ(45deg);
 }
+/**********/
+  .tela {
+    position: relative;
+    z-index: 5;
+    width: 360px;
 
-/* ------------------ */
-#battlefieldEl {
-  width: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
+  .battlefield {
+    position: relative;
+    perspective: 1000px;
+    perspective-origin: top;
+
+    left: 50%;
+    bottom: 5%;
+    transform: translateX(-50%);
+  }
+
+  .field {
+    transform-style: preserve-3d;
+    transform: rotateX(70deg);
+  }
+
+  .enemyField, .middle, .playerField {
+    border: 3px solid #ffffff06;
+    width: 400px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 2px 0;
+    padding: 0;
+  }
+
+  .enemyField {
+    height: 300px;
+  }
+
+  .middle {
+    height: 80px;
+  }
+
+  .playerField {
+    height: 200px;
+  }
+
+#playerAmount, #playerEffectZone, #enemyAmount, #enemyEffectZone {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  border-radius: 5px;
-
-  padding: 5px 10px;
-  box-shadow: #02234565 0 0 25px;
-}
-#battlefieldEl :nth-child(1) { order: 1; }
-#battlefieldEl :nth-child(2) { order: 3; }
-#battlefieldEl :nth-child(3) { order: 2; } 
-
-.playerField {
-  display: flex;
-  flex-direction: column; /* Se for inimigo :reverce-column */
   justify-content: center;
   align-items: center;
 
-  width: 100%;
-  margin: 5px 0;
-  padding: 10px 5px;
-}
-
- /* ESTILIZAÇÂO DO CONTAINER //HAND */
-.handEl {
-  display: inline-flex;
-  width: 100%;
-  min-height: 40px;
-  overflow-x: auto;
-
-  padding: 3px 15px;
-}
-
-/* ESTILIZAÇÂO DO CONTAINER //FIELD */
-.fieldEl{
-  position: relative;
-  width: 70%;
-  height: 160px;
-
-  display: flex;
-  flex-direction: column; /* Se for inimigo :reverce-column */
-  justify-content: space-around;
-  align-items: center;
-
+  background-color: #ffffff35;
   border-radius: 3px;
-
-  padding: 5px 0;
 }
 
-/**/
-.amountEl, .spellsEl{
-  box-shadow: 0 0 15px #ffffff75;
-  border: 1px solid #00113375;
-  width: 40px;
-  height: 55px;
+  .playerField #playerAmount {
+    width: 42px;
+    aspect-ratio: 1/1.6;
 
-  border-radius: 3px;
+    margin: 2px 0;
+  }
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  .playerField #playerEffectZone {
+    background-color: #ffffff25;
+    border-radius: 3px;
+    width: calc(42px * 4);
+    aspect-ratio: 1/0.4;
 
-.spellsEl {
-  width: 90%;
-  height: 70px;
+    margin: 2px 0;
+  }
 
-  flex-direction: row;
-}
+  .playerHandZone {
+    position: absolute;
+    bottom: -30px;
+    width: 100%;
+    height: 100px;
 
-/* EStilização do deck */
-.deck-area {
-  background-color: #00000020;
-  width: 100%;
-  padding: 5px 0;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
 
-  display: flex;
-  justify-content: center;
-}
+    /* overflow-x: auto; */
+  }
 
-.deckEl, .descartEl{
-  border-radius: 2px;
+  .playerHandZone > div {
+    position: relative;
+    width: 140px;
+    margin: -30px;
 
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-end;
+    transform: rotateX(25deg);
+  }
+  .playerHandZone > div:hover {
+    position: relative;
+    top: -35px;
+    box-shadow: 0 0 20px 2000px #00000050;
+    z-index: 10;
+  }
 
-  font-size: 8pt;
-  color: #eee;
-}
+  .playerHandZone > div > img {
+    width: 100%;
+    height: 100%;
+  }
 
-.deckEl {
-  background-image: url('../../cards/verso-hq.png');
-  background-size: cover;
+  .playerHandZone > div {
+    box-shadow: 2px 2px 10px 5px #00000075;
+  }
 
-  width: 40px;
-  height: 60px;
-  padding: 3px;
-}
+  .enemyField #enemyAmount {
+    border-radius: 3px;
+    width: 42px;
+    aspect-ratio: 1/1.6;
 
-.descartEl {
-  background-color: #00000035;
-  width: 40px;
-  height: 60px;
+    margin: 2px 0;
 
-  margin: 0 5px;
+    transform: rotateZ(-180deg);
+  }
+
+  .enemyField #enemyEffectZone{
+    border-radius: 3px;
+    width: calc(42px * 4);
+    aspect-ratio: 1/0.4;
+
+    margin: 2px 0;
+    transform: rotateZ(-180deg);
+  }
+
+  #enemyHand {
+    position: relative;
+    width: 100%;
+    height: 25px;
+
+    perspective: 250px;
+    perspective-origin: bottom;
+  }
+
+  #enemyHand #enemyCards {
+    position: relative;
+    height: 90px;
+
+    margin: -75px auto;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    transform-style: preserve-3d;
+    transform: rotateX(-10deg);
+  }
+
+  #enemyCards > div {
+    position: relative;
+    width: 32px;
+    height: 100%;
+    margin: 1px;
+  }
+
+  #enemyCards > div > img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .middle {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  #deck, #descart {
+    border-radius: 2px;
+    background-color:#ffaa0045;
+    width: 42px;
+    height: 26px;
+
+    margin: 0 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #deck > img {
+    width: 32px;
+    aspect-ratio: 1/1.6;
+  }
+
+  #descart > img {
+    width: 32px;
+    aspect-ratio: 1/1.6;
   }

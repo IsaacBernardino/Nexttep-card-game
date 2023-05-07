@@ -1,9 +1,89 @@
 import CARDS from "./CARDS.js";
 
-function Deck() {
+class Deck {
+  constructor() {
+    this.MAX_CARDS = 40;
+    this.currentCards = 0;
+
+    this.mainDeck = [];
+
+    this.complete = false;
+    this.ev = new Environment();
+
+    this.init();
+  }
+
+  init() {
+    CreateLog('Deck > Main Deck initializing...');
+    // Build do deck
+    this.mainDeck = 
+      [
+        CARDS[0], CARDS[0], CARDS[0],
+        CARDS[1], CARDS[1], CARDS[1],
+        CARDS[2], CARDS[2], CARDS[2],
+        CARDS[3], CARDS[3], CARDS[3],
+        CARDS[4], CARDS[4], CARDS[4],
+        CARDS[5], CARDS[5], CARDS[5],
+        CARDS[6], CARDS[6], CARDS[6],
+        CARDS[7], CARDS[7], CARDS[7],
+        CARDS[8], CARDS[8], CARDS[8],
+        CARDS[9], CARDS[9], CARDS[9],
+        // efeitos
+        CARDS[10],CARDS[11],CARDS[12], CARDS[13], CARDS[14], CARDS[15], CARDS[16], CARDS[17],
+      ]
+    this.currentCards = this.mainDeck.length;
+    this.complete = true;
+
+    this.deckShuffle();
+    this.RenderDeck();
+  }
+
+  DrawCard () {
+    if(this.complete && this.currentCards > 0){
+      const card = this.mainDeck.pop();
+      this.updateDeck();
+      return card;
+    }else {
+      console.error('The deck has not been initialized yet or is empty');
+    }
+  }
+
+  deckShuffle() {
+    if(this.complete && this.currentCards > 0){
+      shuffle(this.mainDeck);
+    }else {
+      console.error('The deck has not been initialized yet or is empty');
+    }
+  }
+
+  RenderDeck(){
+    const deckImg = document.createElement('img');
+    deckImg.src = './cards/backCard.png';
+    deckImg.style.rotate = '90deg';
+
+    if(this.currentCards > 0) {
+      this.ev.places.deck_descart.deck.insertAdjacentElement('beforeend', deckImg);
+    }
+  }
+
+  updateDeck() {
+    //const deckElStyle = document.querySelector('.deckEl');
+
+    if(this.complete && this.currentCards > 0){
+      //console.log('--> Update visual deck.');
+      this.currentCards = this.mainDeck.length;
+      // if(deckElStyle != null)
+      //   deckElStyle.innerHTML = mainDeck.currentCards;
+    } else {
+      error('The deck has not been initialized yet or is empty');
+    }
+  }
+}
+
+function D() {
   const mainDeck = {}
 
-  const ev = document.querySelector('#battlefieldEl')
+  //const ev = document.querySelector('#battlefieldEl')
 
   //Variaveis
   mainDeck.MAX_CARDS = 40;
@@ -34,7 +114,7 @@ function Deck() {
     // CARDS[8], CARDS[8],
     // CARDS[1],
     // CARDS[6],
-    //CARDS[10],CARDS[11],CARDS[12], CARDS[13], CARDS[14], CARDS[15], CARDS[16], CARDS[17],
+    CARDS[10],CARDS[11],CARDS[12], CARDS[13], CARDS[14], CARDS[15], CARDS[16], CARDS[17],
   ]
 
   // Variaveis internas
@@ -71,7 +151,7 @@ function Deck() {
     deckDescart.insertAdjacentElement('beforeend', deckEl);
 
     // ev = ambiente
-    ev.insertAdjacentElement('beforeend', deckDescart);
+    //ev.insertAdjacentElement('beforeend', deckDescart);
   }
 
   function deckShuffle() {

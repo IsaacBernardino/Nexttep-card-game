@@ -1,18 +1,18 @@
-function Gamepheses () {
-  const phase = {}
+class GamePhases {
+  contructor() {
+  
+    this.DRAW_PHASE = false;
+    this.WAIT_PHASE = false;
+    this.ACTION_PHASE = false; // set effect and activation, number activation
+    this.END_PHASE = false;
+  
+    this.initGame = initGame;
 
-  phase.DRAW_PHASE = false;
-  phase.WAIT_PHASE = false;
-  phase.ACTION_PHASE = false; // set effect and activation, number activation
-  phase.END_PHASE = false;
-
-  phase.initGame = initGame;
-
-  function initGame() {
-    return true;
   }
 
-  return phase;
+  initGame() {
+    return true;
+  }
 }
 
-export default Gamepheses;
+export default GamePhases;

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<style>
+  * {
+    padding: 0;
+    margin: 0;
+
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: #123;
+  }
+
+  /* zindex 0 , 5, 10 */
+  .tela {
+    position: relative;
+    z-index: 5;
+    border: 1px solid red;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .battlefield {
+    position: relative;
+    perspective: 1000px;
+    perspective-origin: top;
+  }
+
+  .field {
+    transform-style: preserve-3d;
+    transform: rotateX(70deg);
+  }
+
+  .enemyField, .middle, .playerField {
+    border: 3px solid #ffffff06;
+    width: 400px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 2px 0;
+  }
+
+  .enemyField {
+    height: 300px;
+  }
+
+  .middle {
+    height: 80px;
+  }
+
+  .playerField {
+    height: 200px;
+  }
+
+  .playerField #playerAmount {
+    border: 2px solid #fa0;
+    border-radius: 3px;
+    width: 42px;
+    aspect-ratio: 1/1.6;
+
+    margin: 2px 0;
+  }
+
+  .playerField #playerEffectZone {
+    border: 2px solid #fa0;
+    border-radius: 3px;
+    width: calc(42px * 4);
+    aspect-ratio: 1/0.4;
+
+    margin: 2px 0;
+  }
+
+  .enemyField #enemyAmount {
+    border: 2px solid #fa0;
+    border-radius: 3px;
+    width: 42px;
+    aspect-ratio: 1/1.6;
+
+    margin: 2px 0;
+  }
+
+  .enemyField #enemyEffectZone{
+    border: 2px solid #fa0;
+    border-radius: 3px;
+    width: calc(42px * 4);
+    aspect-ratio: 1/0.4;
+
+    margin: 2px 0;
+  }
+
+  #enemyHand {
+    border: 1px solid red;
+    width: calc(42px * 8);
+    height: 64px;
+
+
+    perspective: 500px;
+    perspective-origin: top;
+  }
+
+  #enemyHand #enemyCards {
+    background-color: #ffaa002d;
+    width: calc(42px * 8);
+    height: 80px;
+
+    margin: -20px auto;
+
+    transform-style: preserve-3d;
+    transform: rotateX(160deg);
+  }
+
+  .middle {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  #deck, #descart {
+    border-radius: 2px;
+    background-color:#ffaa0045;
+    width: 42px;
+    height: 26px;
+
+    margin: 0 10px;
+  }
+
+</style>
+<body>
+
+  <div class="tela">
+    <div class="battlefield">
+      <div class="field">
+        <div class="enemyField">
+          <div id="enemyHand">
+            <div id="enemyCards"></div>
+          </div>
+          <div id="enemyEffectZone"></div>
+          <div id="enemyAmount"></div>
+        </div>
+
+        <div class="middle">
+          <div id="deck"></div>
+          <div id="descart"></div>
+        </div>
+
+        <div class="playerField">
+          <div id="playerAmount"></div>
+          <div id="playerEffectZone"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  
+</body>
+</html>

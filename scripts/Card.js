@@ -1,36 +1,11 @@
 import { SelectionContainer } from "./utilities/SelectionTool.js";
 
 class Card {
-  constructor({
-    id,
-    art,
-    cardName,
-    value,
-    description,
-    type,
-    isSet,
-    FIRST,
-    SKIP,
-    STAY,
-    DENY_DRAW,
-    DRAW,
-    DESCART,
-    DESCART_VERIFY,
-    SHOW_HAND,
-    HAND_VERIFY,
-    AMOUNT_VERIFY,
-    AMOUNT_SHUFFLE,
-    AMOUNT_REMOVE_LAST,
-    AMOUNT_REMOVE_FIRST,
-    QUICK,
-    PLAYER_CHOOSE,
-    BANISH,
-    REVERSE_WIN_RULE,
-  }) {
+  constructor({ id, art, cardName, value, description, type, isSet,target, effectType }) {
     this.id = id;
 
     this.art = art;
-    this.verse = "cards/verso-hq.png";
+    this.verse = "cards/backCard.png";
     this.cardName = cardName;
     this.value = value || 0;
     this.description = description || "";
@@ -38,32 +13,221 @@ class Card {
 
     this.isSet = isSet;
 
-    this.effect = {
-      FIRST: FIRST || false, // primeira carta a ser jogada
-      SKIP: SKIP || false, //  Passa para a end phase
-      STAY: STAY || false, // Se mantem em campo por x turnos
-      DENY_DRAW: DENY_DRAW || false, // passa a fase de sacar carta
-      DRAW: DRAW || false, // puxa x cartas
-      DESCART: DESCART || false, // descarta x cartas da mão
-      SHOW_HAND: SHOW_HAND || false, // mostra as cartas na mão
-      HAND_VERIFY: HAND_VERIFY || false, // Verifica se na mão tem x quantidade de cartas
+    this.effect = effectType;
 
-      AMOUNT_VERIFY: AMOUNT_VERIFY || false, // Verifica se o montate tem x quantidade de cartas
-      AMOUNT_SHUFFLE: AMOUNT_SHUFFLE || false, // Mistura os montates no campo e embaralha e puxa x quantidades de cartas para formar um novo motante
-      AMOUNT_REMOVE_LAST: AMOUNT_REMOVE_LAST || false, // remove carta do topo do montante
-      AMOUNT_REMOVE_FIRST: AMOUNT_REMOVE_FIRST || false, // remove carta do fundo do montante
+    this.player = '';
+    this.target = target; // Self, Opponent
 
-      DESCART_VERIFY: DESCART_VERIFY || false, // Verificar por X cartas no descarte
-
-      BANISH: BANISH || false, // Retirar a carta do jogo
-
-      QUICK: QUICK || false, // carta de efeito rapido
-      PLAYER_CHOOSE: PLAYER_CHOOSE || false, // escolher um jogador na mesa
-      REVERSE_WIN_RULE: REVERSE_WIN_RULE || false, //
-    };
+    this.options = false;
+    this.isShowing = false;
   } // Fim do construtor
 
-  Functions(cardId, Player) {
+  init ({ player, showCard }) {
+    this.isShowing = showCard;
+    const element = this.draw(showCard);
+    this.player = player;
+
+    return element;
+  }
+
+  draw (showCard) {
+    const cardElement = document.createElement("div");
+
+    const cardImg = document.createElement('img');
+
+    cardElement.classList.add(this.id);
+    cardImg.src = showCard ? this.art : this.verse;
+
+    cardElement.insertAdjacentElement('beforeend', cardImg)
+
+    this.cardInfoViewer(cardElement);
+
+    // Adiciona evento de click na carta
+    cardElement.addEventListener("click", (e) => {
+      if (this.player.playerTurn && this.player.type == 'SELF') {
+        this.player.PlayCard(
+          {
+            card: this,
+          }
+        );
+      } else {
+        console.log("Is not your action move or your cards");
+      }
+    });
+
+    return cardElement;
+  }
+
+  cardInfoViewer(element) {
+    const cardImgViewer = document.querySelector('#cardFaceplate');
+    const cardNameViewer = document.querySelector('#cardName');
+    const cardDescriptionViewer = document.querySelector('#description');
+
+    if(this.isShowing) {
+      element.addEventListener("mouseenter", e => {
+        cardImgViewer.src = this.art;
+        cardNameViewer.innerText = this.cardName;
+        cardDescriptionViewer.innerText = this.description;
+      });
+    }
+  }
+
+  applyEffect () {
+     this.player.PlayCard({card: this, target: ''});
+
+     // Controle e aplicação dos efeitos das cartas
+     // if (cardId.effect.QUICK === true) {
+     // }
+
+     // if (cardId.effect.FIRST === true) {
+     // }
+
+     // Permite o jogador ativo puxar uma carta
+     // TODO: Se a carta sacada for igual a carta jogada: escolher jogar ou manter na mão
+     // if (cardId.effect.DRAW === true) {
+     //   Player.drawOne();
+     // }
+
+     // Efeito de descarte
+     // if (cardId.effect.DESCART.descart >= 1 && Player.hand.length > 0) {
+     //   new SelectionContainer(
+     //     Player.hand,
+     //     // Action
+     //     (selection) => {
+     //       // Compara o array de cartas para descartar e as cartas da mão, depois descarte as opções
+     //       const cards = [];
+
+     //       selection.forEach((c) => {
+     //         const card = selection.find((element) => element === c);
+     //         const cardIndex = Player.hand.indexOf(card.cardRefId);
+
+     //         if (card != null) {
+     //           //TODO Criar função no player para descartar cartas
+     //           Player.descart.addCardToDescart(Player.hand.splice(cardIndex, 1));
+     //           Player.updateHand();
+
+     //           // criar area de descarte
+     //           // DECK --> descarte
+     //         } else {
+     //           console.error("error to descart");
+     //         }
+     //       });
+     //     }
+     //   );
+     // }
+
+     this.player.updateHand();
+
+     return true;
+  }
+
+  cardInfo() {
+    return `${this.cardName} Descrição da carta: ${this.description}`;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ // Painel de opções dentro da carta
+  //   const optionsPanel = document.createElement("div");
+  //  // optionsPanel.classList.add("optionsPanel");
+  //   optionsPanel.style = 
+  //   `
+
+  //   `
+  //   // Adicionar opcão para as cartas
+  //   // ATIVAR
+  //   const activeCard = document.createElement("button"); // se possivel
+  //   activeCard.classList.add("activeCard");
+  //   activeCard.innerText = "Ativar";
+  //   //COLOCAR
+  //   const setCard = document.createElement("button"); // se possivel
+  //   setCard.classList.add("setCard");
+  //   setCard.innerText = "Colocar";
+  //   //INFO
+  //   const info = document.createElement("button");
+  //   info.classList.add("info");
+  //   info.innerText = "info";
+
+  //   // Impede que o player tenha controle das cartas ao averso
+  //   optionsPanel.style.visibility =
+  //     this.options && this.player.showCard ? "visible" : "hidden";
+
+  //   activeCard.onclick = function () {
+  //     console.log("active card");
+  //     target.applyEffect();
+
+  //     cardRef.remove();
+  //   };
+
+  //   setCard.onclick = function () {
+  //     console.log("set card");
+  //     target.setCardField();
+
+  //     cardRef.remove();
+  //   };
+
+  //   info.onclick = function () {
+  //     const cardView = document.querySelector(".cardView");
+  //     const card_vw = document.querySelector("#card-vw");
+
+  //     let visible = true;
+
+  //     document.querySelector("#ok-btn").addEventListener("click", () => {
+  //       cardView.style.visibility = "hidden";
+  //       visible = false;
+  //       this.player.updateHand();
+  //     });
+
+  //     cardView.style.visibility = "visible";
+
+  //     card_vw.innerHTML = "";
+
+  //     const tempImg = document.createElement("img");
+  //     tempImg.src = this.art;
+  //     tempImg.style.width = "300px";
+
+  //     card_vw.insertAdjacentElement("beforeend", tempImg);
+
+  //     document.body.insertAdjacentElement("beforeend", cardView);
+  //   };
+
+  //   // Insere as opções na carta
+  //   optionsPanel.append(this.isSet.set ? setCard : activeCard);
+  //   optionsPanel.appendChild(info);
+  //   element.insertAdjacentElement("beforebegin", optionsPanel);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  Func(cardId, Player) {
+    //Funções q a carta retorna
     const card = {};
 
     card.draw = draw;
@@ -75,7 +239,7 @@ class Card {
 
     let options = false;
 
-    // Colocar carta no campo de efeitos
+    // Coloca a carta no espaço de efeitos
     function setCardField() {
       // Identificação da carta e se será colocado virado para baixo na mesa
       Player.PlayCard(cardId, true);
@@ -89,45 +253,45 @@ class Card {
       Player.PlayCard(cardId, false);
 
       // Controle e aplicação dos efeitos das cartas
-      if (cardId.effect.QUICK === true) {
-      }
+      // if (cardId.effect.QUICK === true) {
+      // }
 
-      if (cardId.effect.FIRST === true) {
-      }
+      // if (cardId.effect.FIRST === true) {
+      // }
 
-      // Permite o jogador ativo puchar uma carta
-      // TODO: Se a carta puchada for igual a carta jogada: escolher jogar ou manter na mão
-      if (cardId.effect.DRAW === true) {
-        Player.drawOne();
-      }
+      // Permite o jogador ativo puxar uma carta
+      // TODO: Se a carta sacada for igual a carta jogada: escolher jogar ou manter na mão
+      // if (cardId.effect.DRAW === true) {
+      //   Player.drawOne();
+      // }
 
       // Efeito de descarte
-      if (cardId.effect.DESCART.descart >= 1 && Player.hand.length > 0) {
-        new SelectionContainer(
-          Player.hand,
-          // Action
-          (selection) => {
-            // Comparar o array com as cartas para deletar e a mão depois descartar
-            const cards = [];
+      // if (cardId.effect.DESCART.descart >= 1 && Player.hand.length > 0) {
+      //   new SelectionContainer(
+      //     Player.hand,
+      //     // Action
+      //     (selection) => {
+      //       // Compara o array de cartas para descartar e as cartas da mão, depois descarte as opções
+      //       const cards = [];
 
-            selection.forEach((c) => {
-              const card = selection.find((element) => element === c);
-              const cardIndex = Player.hand.indexOf(card.cardRefId);
+      //       selection.forEach((c) => {
+      //         const card = selection.find((element) => element === c);
+      //         const cardIndex = Player.hand.indexOf(card.cardRefId);
 
-              if (card != null) {
-                // Criar função no player para descartar cartas
-                Player.descart.addCardToDescart(Player.hand.splice(cardIndex, 1));
-                Player.updateHand();
+      //         if (card != null) {
+      //           //TODO Criar função no player para descartar cartas
+      //           Player.descart.addCardToDescart(Player.hand.splice(cardIndex, 1));
+      //           Player.updateHand();
 
-                // criar area de descarte
-                // DECK --> descarte
-              } else {
-                console.error("error to descart");
-              }
-            });
-          }
-        );
-      }
+      //           // criar area de descarte
+      //           // DECK --> descarte
+      //         } else {
+      //           console.error("error to descart");
+      //         }
+      //       });
+      //     }
+      //   );
+      // }
 
       Player.updateHand();
 

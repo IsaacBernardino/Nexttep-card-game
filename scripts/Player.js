@@ -1,193 +1,130 @@
-function Player({ name, type, deck, descart, GamePhasesManager }) {
-  const player = {};
+class Player {
+  constructor({name, type, deck, descart, GamePhasesManager}){
+    this.color = '#000';
+    this.name = name;
+    this.type = type;   // tipo do jogador: 'SELF', 'OPPONENT'
 
-  player.color = '#000000'; // azul
-  
-  // variavel de controle do jogador
-  player.playerTurn = false;
-  player.played = false; // controla as jogadas do player
-  player.numberActiveLimit = 1;
+    // Global e igual para todos os jogadores
+    this.deck = deck;
+    this.descart = descart;
+    this.GamePhasesManager = GamePhasesManager;
 
-  player.name = name;
-  // tipo do jogador: 'SELF', 'OPPONENT'
-  player.type = type || "OPPONENT";
+    // Variaveis do player
+    this.amountCards = [];
+    this.amountScore = 0;
 
-  player.deck = deck;
-  player.descart = descart;
-  player.showCard;
+    this.effectCards = []
+    this.activeCardsEffect = [];
 
-  player.GamePhasesManager = GamePhasesManager;
+    this.hand = [];
 
-  player.amount = [];
-  player.amountScore = 0;
+    // recuros de ambiente
+    this.ev = new Environment();
 
-  player.spells = [];
-  player.activeSpells = [];
+    //
+    this.playerTurn = false;
+  }
 
-  player.hand = [];
-
-  player.init = init;
-
-  player.RenderHand = RenderHand;
-
-  player.drawOne = DrawOne;
-  player.DrawFive = DrawFive;
-
-  player.updateHand = updateHand;
-  player.PlayCard = PlayCard;
-
-  // recuros de ambiente
-  const ev = environment();
-
-  // PLACES - Elementos HTML fornecidos pelo environment.js
-  player.places = {
-    battlefield: ev.battlefield,
-    fieldEl: ev.fieldEl,
-    amountEl: ev.amountEl,
-    spellsEl: ev.spellsEl,
-    handEl: ev.handEl,
-  };
-
-  function init() {
-    if (player.type === "OPPONENT") {
-      player.color = '#aa0000'
-      //temp
-      player.showCard = false;
-      player.places.battlefield.style.flexDirection = "column-reverse";
-      player.places.fieldEl.style.flexDirection = "column-reverse";
+  init () {
+    if (this.type == "OPPONENT") {
+      this.color = '#aa0000';
     } else {
-      player.color = '#0000aa'
-      player.showCard = true;
+      this.color = '#0000aa';
     }
+    this.amountScore = 0;
 
-    player.amountScore = 0;
-    CreateLog(`${player.name}, ${player.type}: started.`);
-  }
-  // Renderiza as cartas na mão do jogador
-  // MUITO IMPORTANTE
-  function RenderHand() {
-    player.hand.forEach((card) => {
-      player.places.handEl.append(
-        card.Functions(card, player).draw(player.showCard)
-      );
-    });
+    CreateLog(`${this.name}, ${this.type}: started.`);
   }
 
-  // puxa uma unica carta do deck
-  function DrawOne() {
-    CreateLog(`${player.name} > draw 1 card`, player.color);
-    player.hand.push(deck.DrawCard());
-    player.updateHand();
+  // Funções de saque
+  // Puxa uma unica carta do deck
+  DrawOne() {
+    CreateLog(`${this.name} > draw 1 card`, this.color);
+    this.hand.push(this.deck.DrawCard());
+    this.updateHand();
   }
 
-  // pucha 5 cartas
-  function DrawFive() {
-    CreateLog(`${player.name} > draw 5 cards`, player.color);
+    // Puxa 5 cartas
+   DrawFive() {
+    CreateLog(`${this.name} > draw 5 cards`, this.color);
     for (let i = 0; i < 5; i++) {
-      player.hand.push(deck.DrawCard());
+      this.hand.push(this.deck.DrawCard());
     }
-    updateHand();
+    this.updateHand();
   }
 
-  // Atualiza os elementos na mão do jogador
-  function updateHand() {
-    // limpar toda a area antes de atualizar
-    player.places.handEl.innerHTML = "";
 
-    player.hand.forEach((card) => {
-      player.places.handEl.append(card.Functions(card, player).draw(player.showCard)
-      );
+  // Renderiza e atualiza as cartas na mão do jogador
+  updateHand() {
+    // Limpar toda a area antes de atualizar
+    this.ev.places.playerField.playerHandCards.innerHTML = '';
+    this.ev.places.enemyField.enemyHandCards.innerHTML = '';
+
+    this.hand.forEach((card) => {
+      if(this.type == 'SELF') {
+        this.ev.places.playerField.playerHandCards.append(card.init(
+          {
+            player: this,
+            showCard: true
+          }));
+      }
+
+      if(this.type == 'OPPONENT') {
+        this.ev.places.enemyField.enemyHandCards.append(card.init({
+          player: this,
+          showCard: false
+        }));
+      }
     });
-    
   }
 
-  // Recebe a carta clicada para a ativação
-  function PlayCard(card, set) {
+  clearHand () {
+    this.ev.places.playerField.playerHandCards.innerHTML = '';
+    this.ev.places.enemyField.enemyHandCards.innerHTML = '';
+  }
+
+
+  PlayCard({card, target}) {
     // Verifica se a carta é um numero
     if (card.type === "number") {
-      activeOnAmount();
-    }
-    // Verifica se a carta é um efeito
-    if (card.type === "effect") {
-      cardSpellField(false);
-      console.log("active card");
-    }
-
-    function activeOnAmount() {
-      // Jogar a carta no montante
-      // retorno visual da carta
+      // Jogar a carta no montante e seu retorno visual 
       const cardAmount = document.createElement("img");
       cardAmount.src = card.art;
-      cardAmount.style.width = "40px";
+      cardAmount.style.width = "42px";
       cardAmount.style.position = "absolute";
 
-      player.places.amountEl.insertAdjacentElement("beforeend", cardAmount);
+      if(this.type == 'SELF') {
+        this.ev.places.playerField.amountZone.insertAdjacentElement('beforeend', cardAmount);
+      } else {
+        this.ev.places.enemyField.amountZone.insertAdjacentElement('beforeend', cardAmount);
+      }
 
-      player.amount.push(card);
-      player.amountScore += card.value;
+      this.amountCards.push(card);
+      this.amountScore += card.value;
 
       console.log(
-        `${player.name}: AmountScore: ${player.amountScore}, AmountCards:${player.amount.length}`
+        `${this.name}: AmountScore: ${this.amountScore}, AmountCards:${this.amountCards.length}`
       );
 
       // Indece da carta ativada
-      var index = player.hand.indexOf(card);
+      let index = this.hand.indexOf(card);
       // remoção da carta da mão
       if (index > -1) {
-        player.hand.splice(index, 1);
+        this.hand.splice(index, 1);
       }
 
-      player.updateHand();
-      CreateLog(`${player.name} activated ${card.cardName}`, player.color);
+      this.updateHand();
+      CreateLog(`${this.name} activated ${this.cardName}`, this.color);
 
-      if(player.numberActiveLimit > 0) player.numberActiveLimit--;
+      if(this.numberActiveLimit > 0) this.numberActiveLimit--;
     }
 
-    // // Verificar se na mão contem cartas iguais
-    // const sameCards = Player.hand.filter((card) => card.id == card.id);
-    // let playSame = document.createElement('button');
-
-    // if (sameCards.length > 0) {
-    //   console.log("cartas iguais: ", sameCards);
-
-    //   new SelectionContainer(sameCards, applyEffect);
-
-    // } else {
-    if (player.numberActiveLimit === 0) {
-      player.GamePhasesManager.ACTION_PHASE = false; // finalizar fase de ação quando todas as ações for concluidas
-      player.GamePhasesManager.END_PHASE = true; // proximo jogador
-    }
-    // }
-
-    function cardSpellField(isSet) {
-      // Jogar a carta na area de efeito
-      // retorno visual das cartas de efeito
-      const cardSpellField = document.createElement("img");
-      cardSpellField.src = isSet ? card.verse : card.art;
-      cardSpellField.style.width = "40px";
-      cardSpellField.style.position = "relative";
-      cardSpellField.style.margin = "0 1px";
-
-      player.places.spellsEl.insertAdjacentElement("beforeend", cardSpellField);
-
-      player.spells.push(card);
-      //Player.activeCard.push ();
-
-      console.log(`${player.name}: Speels on field: ${player.spells.length}`);
-
-      // Indece da carta jogada
-      var index = player.hand.indexOf(card);
-
-      // remover carta da mão
-      if (index > -1) {
-        player.hand.splice(index, 1);
-      }
-
-      player.updateHand();
+    // Verifica se a carta é um efeito
+    if (card.type === "effect") {
+      //cardSpellField(false);
+      console.log("active card");
     }
   }
-
-  return player;
 }
 
 export default Player;

@@ -6,3 +6,5 @@ criar a area de descarte e faze-lo listavel [ok 28/11]
 Implementar um sistema de log [ok 24/11]
 
 resolver Bug de seleção de cartas iguais
+
+Resolver problema em qual o id das cartas aparece no inspetor 
