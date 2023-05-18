@@ -1,10 +1,27 @@
 Retrabalhar o script 'card' [ok 26/11]
 
 Fazer o montante listavel []
-criar a area de descarte e faze-lo listavel [ok 28/11]
+criar a area de descarte e faze-lo listavel []
 
-Implementar um sistema de log [ok 24/11]
+retrabalhar o sistema de log []
 
 resolver Bug de seleção de cartas iguais
 
 Resolver problema em qual o id das cartas aparece no inspetor 
+
+refazer a logica de turnos e o PhaseManager.js
+
+//
+Contrução de deck de 60 cartas fixo.
+  numero de copias de cartas no baralho marcada na raridade da carta. se raridade 3, então o deck tera obrigatoriamente 3 copias da carta
+  sistema de construção de baralhos
+
+  Escolher o baralho de algum jogador por sorteio no inicio da partida.
+
+
+//
+Melhorias para telas menores
+  celular:
+    esconder o logo e a barra de info das cartas.
+    viabilizar botoes para ativar cartas
+    pop-up de efeito de cartas quando precionado em dispositivos de telas pequenas.

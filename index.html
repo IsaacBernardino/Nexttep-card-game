@@ -11,20 +11,18 @@
     <link rel="stylesheet" href="./scripts/utilities/options.css" />
 
     <link rel="stylesheet" href="./index.css">
+
+    <!-- FONTES -->
+    <link rel="stylesheet" href="./assets/fonts/fonts_import.css">
     <style>
 
     </style>
   </head>
   <body>
-    <!-- <div class="system">
-      <div id="phase-indicator">
-        <img src="./assets/images/phases/indicator-DrawPhase.png" alt="" />
-      </div>
-    </div> -->
 
     <div class="cardInfo">
       <div>
-        <img id="cardFaceplate" src="./cards/black_card.png" alt="">
+        <img id="cardFaceplate" src="./cards/blank_card.png">
       </div>
 
       <div id="infos">
@@ -60,30 +58,21 @@
       <div class="playerHandZone"></div>
     </div>
 
-    
-
-    <!-- <div id="battlefieldEl"></div> -->
-
-
     <div class="logArea">
       <h1>LOG</h1>
       <div id="log-container"></div>
     </div>
 
-    <!-- <div class="options">
-      <div id="d_phase">DRAW PHASE</div>
-      |
-      <div id="w_phase">WAIT PHASE</div>
-      |
-      <div id="a_phase">ACTION PHASE</div>
-      |
-      <div id="e_phase">END PHESE</div>
-    </div> -->
+    <div class="nextStep">
+      <span id="activePlayer">Você</span>
+      <span id="stepName">⠀</span>
+      <button id="next">Avançar</button>
+    </div>
 
-    <!-- <div class="cardView">
-      <div id="card-vw"></div>
-      <button id="ok-btn">OK</button>
-    </div> -->
+    <div class="system">
+      <div id="phase-indicator">
+      </div>
+    </div>
 
     <script type="module" src="./main.js"></script>
 

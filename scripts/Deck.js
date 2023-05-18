@@ -30,6 +30,7 @@ class Deck {
         CARDS[9], CARDS[9], CARDS[9],
         // efeitos
         CARDS[10],CARDS[11],CARDS[12], CARDS[13], CARDS[14], CARDS[15], CARDS[16], CARDS[17],
+        CARDS[18],CARDS[19],CARDS[12], CARDS[13], CARDS[14], CARDS[15], CARDS[16], CARDS[17],
       ]
     this.currentCards = this.mainDeck.length;
     this.complete = true;
@@ -80,6 +81,41 @@ class Deck {
   }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function D() {
   const mainDeck = {}
 
@@ -114,7 +150,7 @@ function D() {
     // CARDS[8], CARDS[8],
     // CARDS[1],
     // CARDS[6],
-    CARDS[10],CARDS[11],CARDS[12], CARDS[13], CARDS[14], CARDS[15], CARDS[16], CARDS[17],
+    //CARDS[10],CARDS[11],CARDS[12], CARDS[13], CARDS[14], CARDS[15], CARDS[16], CARDS[17],
   ]
 
   // Variaveis internas

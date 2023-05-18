@@ -1,29 +1,33 @@
 @font-face {
-  font-family: Ubuntu-Title;
-  src: url(../fonts/Ubuntu/Ubuntu-Title-Rounded.ttf);
-  font-weight: 400;
+  font-family: Infinity;
+  src: url(../fonts/made_infinity/Thin.otf);
+  font-weight: 100;
 }
 
 @font-face {
-  font-family: Ubuntu;
-  src: url(../fonts/Ubuntu/Ubuntu-Regular.ttf);
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: Ubuntu;
-  src: url(../fonts/Ubuntu/Ubuntu-Bold.ttf);
-  font-weight: 900;
-}
-
-@font-face {
-  font-family: Ubuntu-BoldItalic;
-  src: url(../fonts/Ubuntu/Ubuntu-BoldItalic.ttf);
-  font-weight: 900;
-}
-
-@font-face {
-  font-family: Ubuntu;
-  src: url(../fonts/Ubuntu/Ubuntu-Light.ttf);
+  font-family: Infinity;
+  src: url(../fonts/made_infinity/Light.otf);
   font-weight: 200;
+}
+
+@font-face {
+  font-family: Infinity;
+  src: url(../fonts/made_infinity/Regular.otf);
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Infinity;
+  src: url(../fonts/made_infinity/Medium.otf);
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: Infinity;
+  src: url(../fonts/made_infinity/Black.otf);
+  font-weight: 900;
+}
+
+* {
+  font-family: Infinity;
 }

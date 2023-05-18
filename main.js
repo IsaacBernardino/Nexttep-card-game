@@ -8,6 +8,22 @@ import GamePhases from "./scripts/GamePhases.js";
 const ev = new Environment ();
 
 const PhasesManager = new GamePhases();
+const nextButton = document.getElementById('next');
+const stepNameIndicator = document.getElementById('stepName');
+let nextStep = false;
+
+const system = document.querySelector('.system');
+const phaseIndicatorElement = document.querySelector('#phase-indicator');
+const phaseIndicatorImages = {
+  drawFaseIndicator : './assets/images/phases/indicator-DrawPhase.png',
+  ActionFaseIndicator : './assets/images/phases/indicator-ActionPhase.png',
+  effectStepIndicator : './assets/images/phases/indicator-EffectStep.png',
+  numberStepIndicator : './assets/images/phases/indicator-NumberStep.png',
+  waitFaseIndicator : './assets/images/phases/indicator-WaitPhase',
+  endFaseIndicator : './assets/images/phases/indicator-EndPhase.png'
+}
+
+let currentActivateLimite = 1;
 
 // Renderizar area do deck assim que instanciado
 const globalDeck = new Deck();
@@ -48,7 +64,7 @@ function Init() {
 
 let initMatch = false;
 let turnsCount = 0;
-let over = false;
+let GameOver;
 
 function startMatch() {
   CreateLog("SYSTEM > Match started: " + Self.name + " vs " + Opponent.name);
@@ -59,15 +75,130 @@ function startMatch() {
 
   const random = Math.floor(Math.random() * players.length);
 
-  activePlayer = players[random];
+  activePlayer = players[0];
   activePlayer.playerTurn = true;
 
+  //Initiate with draw Step
+  GameOver = false;
+  turnsCount ++;
   CreateLog("SYSTEM > " + activePlayer.name + " Iniciate turn");
   initMatch = true;
 
-  turnsCount ++;
-
+  //turn()
+  PhasesManager.DRAW_PHASE = true;
+  drawStep()
   //Definido fase inicial do player
 }
 
+function turn() {
+
+  if(PhasesManager.DRAW_PHASE = true) {
+    phaseIndicatorElement.innerHTML = (`<img src='${phaseIndicatorImages.drawFaseIndicator}';/>`)
+
+    stepNameIndicator.innerText = 'Ato de Saque';
+    nextButton.style.opacity = '0';
+
+    activePlayer.currentActivateLimite = currentActivateLimite;
+  }
+
+  if(PhasesManager.EFFECT_ACT) {
+    phaseIndicatorElement.innerHTML = (`<img src='${phaseIndicatorImages.effectStepIndicator}';/>`)
+
+    stepNameIndicator.innerText = 'Ato de Efeitos'
+    nextButton.style.opacity = '1';
+  }
+
+  if(PhasesManager.NUMBER_ACT) {
+    phaseIndicatorElement.innerHTML = (`<img src='${phaseIndicatorImages.numberStepIndicator}';/>`)
+
+    stepNameIndicator.innerText = 'Ato de Numeros'
+    nextButton.style.opacity = '0';
+  }
+
+    nextButton.addEventListener('click', () => {
+      if(PhasesManager.EFFECT_ACT == true) nextStep = true;
+    });
+
+    effectAct();
+
+    if(activePlayer.numberActiveLimit <= 0) {
+      phaseIndicatorElement.innerHTML = (`<img src='${phaseIndicatorImages.endFaseIndicator}';/>`)
+
+      if(PhasesManager.END_PHASE != false) endfase();
+    }
+  
+}
+
+function drawStep() {
+  if(activePlayer.type == 'SELF') {
+    if(activePlayer.hand.length <= 0 && PhasesManager.DRAW_PHASE) {
+      activePlayer.DrawFive();
+    } else if (activePlayer.hand.length >= 1 && PhasesManager.DRAW_PHASE){
+      activePlayer.DrawOne();
+    }
+
+    PhasesManager.DRAW_PHASE = false;
+
+    const interval = setTimeout(() => {
+      // console.log('DRAW PHASE', PhasesManager.DRAW_PHASE);
+      PhasesManager.EFFECT_ACT = true;
+      effectAct();
+      clearInterval(interval);
+    }, 1500);
+  }
+}
+
+function effectAct(){
+  PhasesManager.DRAW_PHASE = false;
+  if(!nextStep && PhasesManager.EFFECT_ACT) activePlayer.activateControl.canActivateEffect = true;
+
+  if (nextStep) {
+    PhasesManager.EFFECT_ACT = false;
+    PhasesManager.NUMBER_ACT = true;
+
+    if(PhasesManager.NUMBER_ACT == true) {
+      activePlayer.activateControl.canActivateEffect = false;
+      activePlayer.activateControl.canAddToAmount = true;
+    }
+    nextStep = false;
+  }
+}
+
+function numberAct(){
+  activePlayer.activateControl.canActivateEffect = false;
+  activePlayer.activateControl.canAddToAmount = true;
+
+  PhasesManager.NUMBER_ACT = true;
+}
+
+function endfase() {
+  PhasesManager.NUMBER_ACT = false;
+
+  activePlayer.activateControl.canAddToAmount = false;
+
+  stepNameIndicator.innerText = 'Ato Final'
+  nextButton.style.opacity = '0';
+
+  //PhasesManager.END_PHASE = false;
+}
+
+function switchPlayer () {
+
+}
+
+function update () {
+
+  if(initMatch)
+    turn();
+
+  if(globalDeck.currentCards > 0){
+    GameOver = false;
+  } else {
+    GameOver = true;
+  }
+
+  requestAnimationFrame(update);
+}
+
 Init();
+update();

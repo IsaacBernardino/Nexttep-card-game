@@ -130,7 +130,7 @@ const CARDS = [
       do monte de descarte e
       adicioná-la à sua mão.`,
     type: 'effect',
-    isSet: {set: true, turns: 1},
+    isSet: {set: false, turns: 0},
   }),
 
   new Card({
@@ -182,7 +182,7 @@ const CARDS = [
       para a mão é negado até o
       fim desse turno.`,
     type: 'effect',
-    isSet: {set: false, turns: 0},
+    isSet: {set: true, turns: 1},
   }),
 
   new Card({
@@ -281,6 +281,7 @@ const CARDS = [
       [zona de descarte].`,
     type: 'effect',
     isSet: {set: false, turns: 0},
+    // Effect to apply
   }),
 
   new Card({
@@ -325,7 +326,7 @@ const CARDS = [
       imediatamente para o próximo
       jogador.`,
     type: 'effect',
-    isSet: {set: false, turns: 0},
+    isSet: {set: true, turns: 1},
   }),
 
 ]
