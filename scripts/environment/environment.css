@@ -195,10 +195,8 @@ body {
 
   .playerHandZone > div:hover > img {
     position: relative;
-    /* top: -35px; */
     scale: 1.2;
     transform: translateY(-100px);
-    /* z-index: 10; */
   }
 
   .playerHandZone > div > img {

@@ -35,7 +35,7 @@ class Card {
 
     const cardImg = document.createElement('img');
 
-    cardElement.classList.add(this.id);
+    cardElement.classList.add('card_on_hand');
     cardImg.src = showCard ? this.art : this.verse;
 
     cardElement.insertAdjacentElement('beforeend', cardImg)

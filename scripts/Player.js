@@ -69,6 +69,11 @@ class Player {
       this.ev.places.enemyField.enemyHandCards.innerHTML = '';
     }
 
+
+
+
+    // gtc[0].style.transform = 'rotateZ(15deg)';
+
     this.hand.forEach((card) => {
       if(this.type == 'SELF') {
         this.ev.places.playerField.playerHandCards.append(card.init(
