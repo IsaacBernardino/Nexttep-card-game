@@ -1,85 +1,90 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nexttep Battlefield</title>
 
-    <!-- ESTILOS -->
-    <link rel="stylesheet" href="./scripts/environment/environment.css" />
-    <link rel="stylesheet" href="./scripts/utilities/options.css" />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nexttep Battlefield</title>
 
-    <link rel="stylesheet" href="./index.css">
+  <!-- ESTILOS -->
+  <link rel="stylesheet" href="./scripts/environment/environment.css" />
+  <link rel="stylesheet" href="./scripts/utilities/options.css" />
 
-    <!-- FONTES -->
-    <link rel="stylesheet" href="./assets/fonts/fonts_import.css">
-    <style>
+  <link rel="stylesheet" href="./index.css">
 
-    </style>
-  </head>
-  <body>
+  <!-- FONTES -->
+  <link rel="stylesheet" href="./assets/fonts/fonts_import.css">
+  <style>
 
-    <div class="cardInfo">
-      <div>
-        <img id="cardFaceplate" src="./cards/blank_card.png">
-      </div>
+  </style>
+</head>
 
-      <div id="infos">
-        <div id="cardName"></div>
-        <div id="description"></div>
-        <div id="others"></div>
-      </div>
+<body>
 
+  <div class="cardInfo">
+    <div>
+      <img id="cardFaceplate" src="./cards/blank_card.png">
     </div>
 
-    <div class="tela">
-      <div class="battlefield">
-        <div class="field">
-          <div class="enemyField">
-            <div id="enemyHand">
-              <div id="enemyCards"></div>
-            </div>
-            <div id="enemyEffectZone"></div>
-            <div id="enemyAmount"></div>
+    <div id="infos">
+      <div id="cardName"></div>
+      <div id="description"></div>
+      <div id="others"></div>
+    </div>
+
+  </div>
+
+  <div class="tela">
+    <div class="battlefield">
+      <div class="field">
+        <div class="enemyField">
+          <div id="enemyHand">
+            <div id="enemyCards"></div>
           </div>
-  
-          <div class="middle">
-            <div id="deck"></div>
-            <div id="descart"></div>
-          </div>
-  
-          <div class="playerField">
-            <div id="playerAmount"></div>
-            <div id="playerEffectZone"></div>
-          </div>
+          <div id="enemyEffectZone"></div>
+          <div id="enemyAmount"></div>
+        </div>
+
+        <div class="middle">
+          
+          <div id="deck"><span></span></div>
+          <div id="descart"></div>
+        </div>
+
+        <div class="playerField">
+          <div id="playerAmount"></div>
+          <div id="playerEffectZone"></div>
         </div>
       </div>
-      <div class="playerHandZone"></div>
     </div>
+    <div class="playerHandZone"></div>
+  </div>
 
-    <div class="logArea">
-      <h1>LOG</h1>
-      <div id="log-container"></div>
+  <div class="logArea">
+    <h1>LOG</h1>
+    <div id="log-container"></div>
+  </div>
+
+  <div class="nextStep">
+    <span id="activePlayer">Você</span>
+    <span id="stepName">⠀</span>
+    <button id="next">Avançar</button>
+  </div>
+
+  <div class="system">
+    <div id="phase-indicator">
     </div>
+  </div>
 
-    <div class="nextStep">
-      <span id="activePlayer">Você</span>
-      <span id="stepName">⠀</span>
-      <button id="next">Avançar</button>
-    </div>
+  <script type="module" src="./main.js"></script>
 
-    <div class="system">
-      <div id="phase-indicator">
-      </div>
-    </div>
+  <script src="./scripts/environment/environment.js"></script>
 
-    <script type="module" src="./main.js"></script>
+  <!-- Ultilidades -->
+  <script src="./scripts/utilities/shuffle.js"></script>
+  <script src="./scripts/system/log/LogSystem.js"></script>
+  <script src="soundmanager2.js"></script>
+</body>
 
-    <script src="./scripts/environment/environment.js"></script>
-
-    <!-- Ultilidades -->
-    <script src="./scripts/utilities/shuffle.js"></script>
-    <script src="./scripts/system/log/LogSystem.js"></script>
-  </body>
 </html>

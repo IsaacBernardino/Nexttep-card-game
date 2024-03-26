@@ -16,8 +16,14 @@ class Deck {
   init() {
     CreateLog('Deck > Main Deck initializing...');
     // Build do deck
-    this.mainDeck = 
-      [
+    this.mainDeck = [
+            CARDS[0], CARDS[0], CARDS[0],
+            CARDS[1], CARDS[6], CARDS[1],
+            CARDS[2], CARDS[7], CARDS[2],
+            CARDS[3], CARDS[8], CARDS[3],
+            CARDS[4], CARDS[9], CARDS[4],
+            CARDS[5], CARDS[9], CARDS[5],
+        /*
         CARDS[0], CARDS[0], CARDS[0],
         CARDS[1], CARDS[1], CARDS[1],
         CARDS[2], CARDS[2], CARDS[2],
@@ -29,8 +35,10 @@ class Deck {
         CARDS[8], CARDS[8], CARDS[8],
         CARDS[9], CARDS[9], CARDS[9],
         // efeitos
+        
         CARDS[10],CARDS[11],CARDS[12], CARDS[13], CARDS[14], CARDS[15], CARDS[16], CARDS[17],
         CARDS[18],CARDS[19],CARDS[12], CARDS[13], CARDS[14], CARDS[15], CARDS[16], CARDS[17],
+        */
       ]
     this.currentCards = this.mainDeck.length;
     this.complete = true;
@@ -39,30 +47,28 @@ class Deck {
     this.RenderDeck();
   }
 
-  DrawCard () {
-    if(this.complete && this.currentCards > 0){
+  DrawCard() {
+    if (this.complete && this.currentCards > 0) {
       const card = this.mainDeck.pop();
       this.updateDeck();
       return card;
-    }else {
+    } else {
       console.error('The deck has not been initialized yet or is empty');
     }
   }
 
   deckShuffle() {
-    if(this.complete && this.currentCards > 0){
+    if (this.complete && this.currentCards > 0) {
       shuffle(this.mainDeck);
-    }else {
+    } else {
       console.error('The deck has not been initialized yet or is empty');
     }
   }
 
-  RenderDeck(){
+  RenderDeck() {
     const deckImg = document.createElement('img');
-    deckImg.src = './cards/backCard.png';
-    deckImg.style.rotate = '90deg';
 
-    if(this.currentCards > 0) {
+    if (this.currentCards > 0) {
       this.ev.places.deck_descart.deck.insertAdjacentElement('beforeend', deckImg);
     }
   }
@@ -70,7 +76,7 @@ class Deck {
   updateDeck() {
     //const deckElStyle = document.querySelector('.deckEl');
 
-    if(this.complete && this.currentCards > 0){
+    if (this.complete && this.currentCards > 0) {
       //console.log('--> Update visual deck.');
       this.currentCards = this.mainDeck.length;
       // if(deckElStyle != null)
@@ -80,33 +86,6 @@ class Deck {
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -126,8 +105,7 @@ function D() {
   mainDeck.currentCards = 0;
 
   // Cartas no deck
-  mainDeck.cards = 
-  [
+  mainDeck.cards = [
     CARDS[0], CARDS[0], CARDS[0],
     CARDS[1], CARDS[1], CARDS[1],
     CARDS[2], CARDS[2], CARDS[2],
@@ -174,7 +152,7 @@ function D() {
     RenderDeck();
   }
 
-  function RenderDeck(){
+  function RenderDeck() {
     // Area principal
     const deckDescart = document.createElement('div');
     deckDescart.classList.add('deck-area');
@@ -183,7 +161,7 @@ function D() {
     const deckEl = document.createElement('div');
     deckEl.classList.add('deckEl');
     deckEl.innerHTML = mainDeck.currentCards;
-    
+
     deckDescart.insertAdjacentElement('beforeend', deckEl);
 
     // ev = ambiente
@@ -191,19 +169,19 @@ function D() {
   }
 
   function deckShuffle() {
-    if(complete && mainDeck.currentCards > 0){
+    if (complete && mainDeck.currentCards > 0) {
       shuffle(mainDeck);
-    }else {
+    } else {
       error('The deck has not been initialized yet or is empty');
     }
   }
 
-  function DrawCard () {
-    if(complete && mainDeck.currentCards > 0){
+  function DrawCard() {
+    if (complete && mainDeck.currentCards > 0) {
       let card = mainDeck.cards.pop();
       updateDeck();
       return card;
-    }else {
+    } else {
       error('The deck has not been initialized yet or is empty');
     }
   }
@@ -211,7 +189,7 @@ function D() {
   // FUNÇÕES DE CONTROLE
   function addCardToDeck(card) {
     // Adiciona a carta recebida no parametro e embaralha o deck
-    if(complete && mainDeck.currentCards > 0){
+    if (complete && mainDeck.currentCards > 0) {
       console.log('--> Adding card to the deck.');
       mainDeck.cards.push(card);
       mainDeck.deckShuffle();
@@ -222,16 +200,16 @@ function D() {
   }
 
   function removeCardFromDeck(c) {
-    if(complete && mainDeck.currentCards > 0){
+    if (complete && mainDeck.currentCards > 0) {
       console.log('--> removing card from the deck.');
-      
+
       const card = mainDeck.cards.find(element => element === c);
       const cardIndex = mainDeck.cards.indexOf(card);
 
       // remove a primeira copia no baralho
-      if(card != null){
+      if (card != null) {
         mainDeck.cards.splice(cardIndex, 1);
-      }else {
+      } else {
         error('The deck has not been initialized yet or is empty');
       }
       // Atualiza o estado do deck
@@ -245,10 +223,10 @@ function D() {
   function updateDeck() {
     const deckElStyle = document.querySelector('.deckEl');
 
-    if(complete && mainDeck.currentCards > 0){
+    if (complete && mainDeck.currentCards > 0) {
       //console.log('--> Update visual deck.');
       mainDeck.currentCards = mainDeck.cards.length;
-      if(deckElStyle != null)
+      if (deckElStyle != null)
         deckElStyle.innerHTML = mainDeck.currentCards;
     } else {
       error('The deck has not been initialized yet or is empty');

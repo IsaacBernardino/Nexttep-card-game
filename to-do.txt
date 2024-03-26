@@ -1,4 +1,4 @@
-Retrabalhar o script 'card' [ok 26/11]
+Retrabalhar o script 'card' [ok 26/11/2022]
 
 Fazer o montante listavel []
 criar a area de descarte e faze-lo listavel []
@@ -9,7 +9,7 @@ resolver Bug de seleção de cartas iguais
 
 Resolver problema em qual o id das cartas aparece no inspetor 
 
-refazer a logica de turnos e o PhaseManager.js
+refazer a logica de turnos e o PhaseManager.js [OK 22/11/2023]
 
 //
 Contrução de deck de 60 cartas fixo.

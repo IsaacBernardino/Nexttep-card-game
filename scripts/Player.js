@@ -1,8 +1,8 @@
 class Player {
-  constructor({name, type, deck, descart, GamePhasesManager}){
+  constructor({ name, type, deck, descart, GamePhasesManager }) {
     this.color = '#000';
     this.name = name;
-    this.type = type;   // tipo do jogador: 'SELF', 'OPPONENT'
+    this.type = type; // tipo do jogador: 'SELF', 'OPPONENT'
 
     // Global e igual para todos os jogadores
     this.deck = deck;
@@ -30,7 +30,7 @@ class Player {
     }
   }
 
-  init () {
+  init() {
     if (this.type == "OPPONENT") {
       this.color = '#aa0000';
     } else {
@@ -49,8 +49,8 @@ class Player {
     this.updateHand();
   }
 
-    // Puxa 5 cartas
-   DrawFive() {
+  // Puxa 5 cartas
+  DrawFive() {
     CreateLog(`${this.name} > draw 5 cards`, this.color);
     for (let i = 0; i < 5; i++) {
       this.hand.push(this.deck.DrawCard());
@@ -62,28 +62,26 @@ class Player {
   // Renderiza e atualiza as cartas na mão do jogador
   updateHand() {
     // Limpar toda a area antes de atualizar
-    if(this.type == 'SELF'){
+    if (this.type == 'SELF') {
       this.ev.places.playerField.playerHandCards.innerHTML = '';
     }
-    if(this.type == 'OPPONENT'){
+    if (this.type == 'OPPONENT') {
       this.ev.places.enemyField.enemyHandCards.innerHTML = '';
     }
-
-
 
 
     // gtc[0].style.transform = 'rotateZ(15deg)';
 
     this.hand.forEach((card) => {
-      if(this.type == 'SELF') {
+      if (this.type == 'SELF') {
         this.ev.places.playerField.playerHandCards.append(card.init(
-          {
-            player: this,
-            showCard: true
-          }));
+        {
+          player: this,
+          showCard: true
+        }));
       }
 
-      if(this.type == 'OPPONENT') {
+      if (this.type == 'OPPONENT') {
         this.ev.places.enemyField.enemyHandCards.append(card.init({
           player: this,
           showCard: false
@@ -92,26 +90,26 @@ class Player {
     });
   }
 
-  clearHand () {
+  clearHand() {
     this.ev.places.playerField.playerHandCards.innerHTML = '';
     this.ev.places.enemyField.enemyHandCards.innerHTML = '';
   }
 
 
-  PlayCard({card, target}) {
+  PlayCard({ card, target }) {
 
-    if(this.activateControl.canActivateEffect) {
+    if (this.activateControl.canActivateEffect) {
       // Verifica se a carta é um efeito
       if (card.type === "effect") {
         // Jogar a carta na area de efeito
         const cardSpellReference = document.createElement("img");
         cardSpellReference.src = card.isSet.set ? card.verse : card.art;
-        cardSpellReference.style.width = "40px";
+        cardSpellReference.style.width = "38px";
         cardSpellReference.style.position = "relative";
         cardSpellReference.style.margin = "0 1px";
-        
+
         //ev.places.playerField.effectZone.insertAdjacentElement("beforeend", cardSpellReference);
-        if(this.type == 'SELF') {
+        if (this.type == 'SELF') {
           this.ev.places.playerField.effectZone.insertAdjacentElement('beforeend', cardSpellReference);
         } else {
           this.ev.places.enemyField.effectZone.insertAdjacentElement('beforeend', cardSpellReference);
@@ -135,39 +133,55 @@ class Player {
       }
     }
 
-    if(this.activateControl.canAddToAmount && this.numberActiveLimit >= 1) {
+    if (this.activateControl.canAddToAmount && this.numberActiveLimit > 0) {
       // Verifica se a carta é um numero
       if (card.type === "number") {
         // Jogar a carta no montante e seu retorno visual 
-          const cardAmount = document.createElement("img");
-          cardAmount.src = card.art;
-          cardAmount.style.width = "42px";
-          cardAmount.style.position = "absolute";
+        const cardAmount = document.createElement("img");
+        cardAmount.src = card.art;
+        cardAmount.style.width = "34px";
+        cardAmount.style.position = "absolute";
 
-          if(this.type == 'SELF') {
-            this.ev.places.playerField.amountZone.insertAdjacentElement('beforeend', cardAmount);
-          } else {
-            this.ev.places.enemyField.amountZone.insertAdjacentElement('beforeend', cardAmount);
+        if (this.type == 'SELF') {
+          this.ev.places.playerField.amountZone.insertAdjacentElement('beforeend', cardAmount);
+        } else {
+          this.ev.places.enemyField.amountZone.insertAdjacentElement('beforeend', cardAmount);
+        }
+
+        //Verificar se tem cartas igual na mão
+        const cardsOnHand = [];
+
+        for (let cardIndex in this.hand) {
+          if (this.hand[cardIndex].type == 'number') {
+            card.value == this.hand[cardIndex].value ? cardsOnHand.push(this.hand[cardIndex]) : null;
           }
+        }
+        
+        console.log(cardsOnHand);
+        // adicionar +1 no numberActiveLimit
+        //destacar carta
 
-          this.amountCards.push(card);
-          this.amountScore += card.value;
 
-          console.log(
-            `${this.name}: AmountScore: ${this.amountScore}, AmountCards:${this.amountCards.length}`
-          );
+        this.amountCards.push(card);
+        this.amountScore += card.value;
 
-          // Indece da carta ativada
-          let index = this.hand.indexOf(card);
-          // remoção da carta da mão
-          if (index > -1) {
-            this.hand.splice(index, 1);
-          }
+        // Indece da carta ativada
+        let index = this.hand.indexOf(card);
+        // remoção da carta da mão
+        if (index > -1) {
+          this.hand.splice(index, 1);
+        }
 
-          this.updateHand();
-          CreateLog(`${this.name} activated ${this.cardName}`, this.color);
-          this.canAddToAmount = false;
-          if(this.numberActiveLimit > 0) this.numberActiveLimit--;
+        this.updateHand();
+        CreateLog(`${this.name} activated ${this.cardName}`, this.color);
+        this.canAddToAmount = false;
+        if (this.numberActiveLimit > 0) this.numberActiveLimit--;
+
+
+        if (this.numberActiveLimit <= 0) {
+          this.playerTurn = false;
+        }
+
       } else {
         console.log('Não é possivel ativar cartas numeral nessa etapa');
       }
